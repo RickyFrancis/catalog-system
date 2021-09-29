@@ -19,6 +19,7 @@ app.get('/', (req, res) => {
   console.log('server is up and running');
   res.send('Server is up and running');
 });
+app.use('/api/users', require('./routes/api/users'));
 
 //Listen to Port
 const PORT = process.env.PORT || 5000;

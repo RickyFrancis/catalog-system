@@ -4,7 +4,7 @@ const mongoURI = process.env.mongoURI || 'mongodb://localhost/catalog-system';
 
 const connectDB = () => {
   try {
-    mongoose.connect(mongoURI, { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true, useFindAndModify: true }, () => {
+    mongoose.connect(process.env.mongoURI || 'mongodb://localhost/catalog-system', { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true, useFindAndModify: true }, () => {
       console.log('Connected to Database');
     });
   } catch (error) {
