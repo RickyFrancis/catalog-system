@@ -58,18 +58,6 @@ const HomeScreen = ({ match }) => {
         </Link>
       )} */}
 
-      <Row>
-        <Col md={4}>
-          <h1>Master Catalog</h1>
-        </Col>
-        <Col md={{ span: 2, offset: 6 }} className="text-right">
-          <LinkContainer to={`/documents/`}>
-            <Button className="my-3">
-              <i className="fas fa-plus"></i> &nbsp; New Document
-            </Button>
-          </LinkContainer>
-        </Col>
-      </Row>
       {loading ? (
         <Loader />
       ) : error ? (

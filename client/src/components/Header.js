@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { Navbar, Nav, Container, NavDropdown } from 'react-bootstrap';
+import { Navbar, Nav, Container, NavDropdown, Button } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import SearchBox from './SearchBox';
 // import { logout } from '../actions/userActions';
@@ -23,21 +23,25 @@ const Header = () => {
 
   return (
     <header>
-      <Navbar bg="dark" variant="dark" expand="lg" collapseOnSelect>
+      <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
         <Container>
-          <LinkContainer to="/">
-            <Navbar.Brand>Catalog</Navbar.Brand>
+          <LinkContainer to={`/`}>
+            <Navbar.Brand>Master Catalog</Navbar.Brand>
           </LinkContainer>
-
-          <Navbar.Toggle aria-controls="basic-navbar-nav" />
-          <Route render={({ history }) => <SearchBox history={history} />} />
-          <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className="ml-auto">
-              <LinkContainer to="/cart">
-                <Nav.Link>
-                  <i className="fas fa-shopping-cart"></i> Cart
-                </Nav.Link>
+          <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+          <Navbar.Collapse id="responsive-navbar-nav">
+            <Nav className="me-auto">
+              <Route
+                render={({ history }) => <SearchBox history={history} />}
+              />
+            </Nav>
+            <Nav>
+              <LinkContainer to={`/create-catalog/`}>
+                <Button>
+                  <i className="fas fa-plus"></i> &nbsp; New Catalog
+                </Button>
               </LinkContainer>
+              &nbsp;
               {userInfo ? (
                 <NavDropdown title={userInfo.name.split(' ')[0]} id="username">
                   <LinkContainer to="/profile">
