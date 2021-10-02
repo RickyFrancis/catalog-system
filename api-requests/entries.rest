@@ -1,0 +1,25 @@
+@hostname = localhost
+
+@port = 5000
+
+@host = {{hostname}}:{{port}}
+
+@protocol = http://
+
+@url = {{protocol}}{{host}}
+
+@contentType = application/json
+
+@adminToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxNTdlM2RiMmIwY2I4NDJmMjQ2ODYyOSIsImlzQWRtaW4iOnRydWUsImlhdCI6MTYzMzE3MDYyNX0.vD1yUqq_lwd68Wb8nu8QtFtMt9U9YWlbt1_35OmCTQA
+
+
+
+POST {{url}}/api/entries
+Content-Type: {{contentType}}
+x-auth-token: {{adminToken}}
+
+{
+  "entryNumber": 1,
+  "title": "Hellow",
+  "author": "Ricky Rozario"
+}

@@ -10,18 +10,10 @@
 
 @contentType = application/json
 
-
-
-### Add an user
-### Access  Public
-POST {{url}}/api/users
+### Get Token
+POST {{url}}/api/auth
 Content-Type: {{contentType}}
-
 {
-  "name": "sohan",
   "email": "sohan@ndub.edu.bd",
-  "password": "rickyonkjaura",
-  "isAdmin": true
+  "password": "rickyonkjaura"
 }
-
-

@@ -1,16 +1,9 @@
 const mongoose = require('mongoose');
 
-const mongoURI = process.env.mongoURI || 'mongodb://localhost/catalog-system';
-
+const mongoURI = process.env.MONGO_URI || 'mongodb://localhost/catalog-system';
+console.log(mongoURI)
 const connectDB = () => {
-  try {
-    mongoose.connect(process.env.mongoURI || 'mongodb://localhost/catalog-system', { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true, useFindAndModify: true }, () => {
-      console.log('Connected to Database');
-    });
-  } catch (error) {
-    console.log(error.message);
-    process.exit(1);
-  }
+  mongoose.connect(mongoURI).then(() => { console.log('connected') }).catch((err) => { console.log(err) });
 }
 
 module.exports = connectDB;
