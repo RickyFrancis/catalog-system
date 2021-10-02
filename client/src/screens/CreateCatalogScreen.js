@@ -1,13 +1,16 @@
-import axios from 'axios';
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { Form, Button } from 'react-bootstrap';
+import React, { useState, useRef } from 'react';
+
+import { Form, Button, InputGroup } from 'react-bootstrap';
+
+import 'flatpickr/dist/themes/airbnb.css';
+import Flatpickr from 'react-flatpickr';
+import { LinkContainer } from 'react-router-bootstrap';
 
 const CreateCatalogScreen = () => {
   const [number, setNumber] = useState('');
   const [title, setTitle] = useState('');
   const [author, setAuthor] = useState('');
-  const [date, setDate] = useState(new Date());
+  const [date, setDate] = useState('');
   const [comments, setComments] = useState('');
 
   const submitHandler = (e) => {
@@ -26,9 +29,23 @@ const CreateCatalogScreen = () => {
     // );
   };
 
+  const options = {
+    altInput: true,
+    dateFormat: 'YYYY-MM-DD',
+    // altFormat: 'DD-MM-YYYY',
+    // allowInput: true,
+    // parseDate: (datestr, format) => {
+    //   return moment(datestr, format, true).toDate();
+    // },
+    // formatDate: (date, format, locale) => {
+    //   // locale can also be used
+    //   return moment(date).format(format);
+    // },
+  };
+  const fp = useRef(null);
   return (
     <Form onSubmit={submitHandler}>
-      <Form.Group controlId="number">
+      <Form.Group controlId="number" className="mb-3">
         <Form.Label>Number</Form.Label>
         <Form.Control
           type="text"
@@ -37,7 +54,7 @@ const CreateCatalogScreen = () => {
           onChange={(e) => setNumber(e.target.value)}
         ></Form.Control>
       </Form.Group>
-      <Form.Group controlId="title">
+      <Form.Group controlId="title" className="mb-3">
         <Form.Label>Title</Form.Label>
         <Form.Control
           type="text"
@@ -46,7 +63,7 @@ const CreateCatalogScreen = () => {
           onChange={(e) => setTitle(e.target.value)}
         ></Form.Control>
       </Form.Group>
-      <Form.Group controlId="author">
+      <Form.Group controlId="author" className="mb-3">
         <Form.Label>Author</Form.Label>
         <Form.Control
           type="text"
@@ -57,25 +74,45 @@ const CreateCatalogScreen = () => {
       </Form.Group>
       <Form.Group controlId="date">
         <Form.Label>Date</Form.Label>
-        <Form.Control
-          type="text"
-          placeholder="Enter Date"
-          value={date}
-          onChange={(e) => setDate(e.target.value)}
-        ></Form.Control>
       </Form.Group>
-      <Form.Group controlId="comments">
+      <div className="input-group mb-3">
+        <Flatpickr
+          class="form-control"
+          style={{ background: '#FFF' }}
+          options={{ dateFormat: 'm-d-Y' }}
+          value={date}
+          onChange={(date) => setDate(date)}
+          ref={fp}
+          placeholder="Select Date"
+        />
+        <button
+          className="btn btn-outline-secondary"
+          type="button"
+          id="button-addon2"
+          onClick={() => {
+            if (!fp?.current?.flatpickr) return;
+            fp.current.flatpickr.open();
+          }}
+        >
+          <i className="far fa-calendar-alt"></i>
+        </button>
+      </div>
+      <Form.Group controlId="comments" className="mb-3">
         <Form.Label>Comments</Form.Label>
         <Form.Control
-          type="text"
-          placeholder="Enter Comments"
+          as="textarea"
+          placeholder="Leave a comment here"
+          style={{ height: '100px' }}
           value={comments}
           onChange={(e) => setComments(e.target.value)}
         ></Form.Control>
       </Form.Group>
 
+      <LinkContainer to={`/`} style={{ marginRight: '10px' }}>
+        <Button variant="secondary">Back</Button>
+      </LinkContainer>
       <Button type="submit" variant="primary">
-        Update
+        Create
       </Button>
     </Form>
   );
