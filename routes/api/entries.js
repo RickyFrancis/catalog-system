@@ -4,39 +4,55 @@ const auth = require('../../middlewares/auth');
 const mongoDB = require('mongodb');
 const router = require('express').Router();
 
-
 router.get('/', auth, async (req, res) => {
   let pageSize = Number(req.query.pageSize) || 10;
   let pageNumber = Number(req.query.pageNumber) || 1;
   let searchParameter = {};
   let sortParams = {};
-  req.query.order === 'desc' ? sortParams.order = req.query.sortBy : sortParams.order = 'asc';
-  req.query.sortBy ? sortParams.sortBy = req.query.sortBy : sortParams.sortBy = 'date';
+  req.query.order === 'desc'
+    ? (sortParams.order = req.query.sortBy)
+    : (sortParams.order = 'asc');
+  req.query.sortBy
+    ? (sortParams.sortBy = req.query.sortBy)
+    : (sortParams.sortBy = 'date');
 
   const sortObject = {};
   sortObject[sortParams.sortBy] = sortObject.order;
-  console.log(req.query.entryNumber);
-  req.query.entryNumber ? searchParameter.entryNumber = req.query.entryNumber : {};
-  req.query.author ? searchParameter.author = {
-    $regex: req.query.author,
-    $options: 'i'
-  } : {};
-  req.query.title ? searchParameter.title = {
-    $regex: req.query.title,
-    $options: 'i'
-  } : {};
-  req.query.date ? searchParameter.date = {
-    $regex: req.query.date,
-    $options: 'i'
-  } : {};
-  req.query.comments ? searchParameter.comments = {
-    $regex: req.query.comments,
-    $options: 'i'
-  } : {};
+  req.query.entryNumber
+    ? (searchParameter.entryNumber = req.query.entryNumber)
+    : {};
+  req.query.author
+    ? (searchParameter.author = {
+        $regex: req.query.author,
+        $options: 'i',
+      })
+    : {};
+
+  req.query.title
+    ? (searchParameter.title = {
+        $regex: req.query.title,
+        $options: 'i',
+      })
+    : {};
+  req.query.date
+    ? (searchParameter.date = {
+        $regex: req.query.date,
+        $options: 'i',
+      })
+    : {};
+  req.query.comments
+    ? (searchParameter.comments = {
+        $regex: req.query.comments,
+        $options: 'i',
+      })
+    : {};
 
   try {
     const count = await Entry.countDocuments({ ...searchParameter });
-    const entries = await Entry.find({ ...searchParameter }).sort({ ...sortObject }).limit(pageSize).skip((pageNumber - 1) * pageSize);
+    const entries = await Entry.find({ ...searchParameter })
+      .sort({ ...sortObject })
+      .limit(pageSize)
+      .skip((pageNumber - 1) * pageSize);
     if (count < 1) {
       return res.status(404).send('Not found!');
     }
@@ -45,20 +61,19 @@ router.get('/', auth, async (req, res) => {
       page: pageNumber,
       pageSize: pageSize,
       total: count,
-      pages: Math.ceil(count / pageSize)
-    })
+      pages: Math.ceil(count / pageSize),
+    });
   } catch (error) {
     console.log(error);
     res.status(400).send({
       error: [
         {
-          msg: error.message
-        }
-      ]
+          msg: error.message,
+        },
+      ],
     });
   }
 });
-
 
 router.get('/:id', auth, async (req, res) => {
   const isValidObjectId = mongoDB.ObjectId.isValid(req.params.id);
@@ -66,9 +81,9 @@ router.get('/:id', auth, async (req, res) => {
     return res.status(400).send({
       error: [
         {
-          msg: 'ObjectID is not valid'
-        }
-      ]
+          msg: 'ObjectID is not valid',
+        },
+      ],
     });
   }
   try {
@@ -77,9 +92,9 @@ router.get('/:id', auth, async (req, res) => {
       return res.status(404).send({
         error: [
           {
-            msg: 'Not found'
-          }
-        ]
+            msg: 'Not found',
+          },
+        ],
       });
     }
     res.status(200).send(entry);
@@ -87,32 +102,37 @@ router.get('/:id', auth, async (req, res) => {
     res.status(400).send({
       error: [
         {
-          msg: error.message
-        }
-      ]
-    })
+          msg: error.message,
+        },
+      ],
+    });
   }
-})
+});
 
 router.post('/', auth, async (req, res) => {
+  console.log(req.body);
+  console.log(new Date(req.body.date));
+  req.body.date = new Date(req.body.date);
   try {
-    const result = validateEntry(req.body);
-    if (result.error) return res.status(400).send({
-      error: [
-        {
-          msg: result.error.details[0].message
-        }
-      ]
-    });
+    // const result = validateEntry(req.body);
+    // if (result.error)
+    //   return res.status(400).send({
+    //     error: [
+    //       {
+    //         msg: result.error.details[0].message,
+    //       },
+    //     ],
+    //   });
 
     let entry = await Entry.findOne({ entryNumber: req.body.entryNumber });
-    if (entry) return res.status(400).json({
-      errors: [
-        {
-          msg: "Entry Number Already Exists"
-        }
-      ]
-    });
+    if (entry)
+      return res.status(400).json({
+        errors: [
+          {
+            msg: 'Entry Number Already Exists',
+          },
+        ],
+      });
 
     entry = new Entry(req.body);
     entry = await entry.save();
@@ -122,14 +142,11 @@ router.post('/', auth, async (req, res) => {
     res.status(400).json({
       error: [
         {
-          msg: error.message
-        }
-      ]
+          msg: error.message,
+        },
+      ],
     });
   }
 });
-
-
-
 
 module.exports = router;

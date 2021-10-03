@@ -32,15 +32,15 @@ const CatalogTable = ({ catalogs }) => {
         </thead>
         <tbody>
           {catalogs.map((catalog) => (
-            <tr key={catalog.id}>
-              <td>{catalog.id}</td>
+            <tr key={catalog._id}>
+              <td>{catalog.entryNumber}</td>
               <td>{catalog.title}</td>
-              <td>{catalog.completed.toString()}</td>
-              <td>{format(new Date(), 'PP')}</td>
-              <td>{catalog.title}</td>
+              <td>{catalog.author}</td>
+              <td>{format(new Date(catalog.date), 'PP')}</td>
+              <td>{catalog.comments}</td>
 
               <td>
-                <LinkContainer to={`/admin/product/${catalog.id}/edit`}>
+                <LinkContainer to={`/edit-catalog/${catalog.id}`}>
                   <Button variant="light" className="btn-sm">
                     <i className="fas fa-edit"></i>
                   </Button>

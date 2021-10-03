@@ -1,42 +1,43 @@
 // import React, { useState, useEffect } from 'react';
 // import axios from 'axios';
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 // import Product from '../components/Product';
-import { Row, Col, Button } from 'react-bootstrap';
+import {
+  Row,
+  Col,
+  Button,
+  Form,
+  InputGroup,
+  FormControl,
+} from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { listCatalogs } from '../actions/catalogActions';
 
 import Paginate from '../components/Paginate';
-// import ProductCarousel from '../components/ProductCarousel';
-// import Meta from '../components/Meta';
+
 import CatalogTable from '../components/CatalogTable';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
-// import FormImpl from 'react-bootstrap/esm/Form';
+
+import Flatpickr from 'react-flatpickr';
 
 const HomeScreen = ({ match }) => {
   const keyword = match.params.keyword;
 
   const pageSize = 10;
-
-  // const pages = 20;
-
   const pageNumber = match.params.pageNumber || 1;
 
-  // const [products, setProducts] = useState([]);
-
-  // useEffect(() => {
-  //   const fetchProducts = async () => {
-  //     const { data } = await axios.get('/api/products');
-  //     setProducts(data);
-  //   };
-
-  //   fetchProducts();
-  // }, []);
+  const [entryNumber, setEntryNumber] = useState('');
+  const [title, setTitle] = useState('');
+  const [author, setAuthor] = useState('');
+  const [date, setDate] = useState('');
+  const [comments, setComments] = useState('');
+  const [sortBy, setSortBy] = useState('date');
+  const [order, setOrder] = useState('desc');
 
   const dispatch = useDispatch();
 
@@ -44,19 +45,148 @@ const HomeScreen = ({ match }) => {
   const { loading, error, catalogs, page, pages } = catalogList;
 
   useEffect(() => {
-    dispatch(listCatalogs(keyword, pageNumber));
-  }, [dispatch, keyword, pageNumber]);
+    dispatch(
+      listCatalogs(
+        pageNumber,
+        sortBy,
+        order,
+        entryNumber,
+        author,
+        title,
+        comments,
+        date
+      )
+    );
+  }, [
+    dispatch,
+    keyword,
+    pageNumber,
+    entryNumber,
+    author,
+    title,
+    comments,
+    date,
+  ]);
+
+  const submitHandler = (e) => {
+    e.preventDefault();
+    dispatch(
+      listCatalogs(
+        pageNumber,
+        sortBy,
+        order,
+        entryNumber,
+        author,
+        title,
+        comments,
+        date
+      )
+    );
+    // if (keyword.trim()) {
+    //   history.push(`/search/${keyword}`);
+    // } else {
+    //   history.push('/');
+    // }
+  };
+
+  const fp = useRef(null);
 
   return (
     <>
-      {/* <Meta /> */}
-      {/* {!keyword ? (
-        <ProductCarousel />
-      ) : (
-        <Link to="/" className="btn btn-light">
-          Go Back
-        </Link>
-      )} */}
+      <Form className="mb-2" onSubmit={submitHandler}>
+        <Row className="align-items-center">
+          <Col xs="auto">
+            <Form.Label htmlFor="inlineFormInput" visuallyHidden>
+              Number
+            </Form.Label>
+            <Form.Control
+              className="mb-2"
+              id="inlineFormInput"
+              type="number"
+              placeholder="Number"
+              value={entryNumber}
+              onChange={(e) => setEntryNumber(e.target.value)}
+            />
+          </Col>
+          <Col xs="auto" className="p-1">
+            <Form.Label htmlFor="inlineFormInput" visuallyHidden>
+              Title
+            </Form.Label>
+            <Form.Control
+              className="mb-2"
+              id="inlineFormInput"
+              placeholder="Title"
+              type="text"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+            />
+          </Col>
+          <Col xs="auto" className="p-1">
+            <Form.Label htmlFor="inlineFormInput" visuallyHidden>
+              Author
+            </Form.Label>
+            <Form.Control
+              className="mb-2"
+              id="inlineFormInput"
+              placeholder="Author"
+              type="text"
+              value={author}
+              onChange={(e) => setAuthor(e.target.value)}
+            />
+          </Col>
+          <Col xs="auto" className="p-1">
+            <Form.Label htmlFor="inlineFormInput" visuallyHidden>
+              Date
+            </Form.Label>
+            <div className="input-group mb-3">
+              <Flatpickr
+                class="form-control"
+                style={{ background: '#FFF' }}
+                options={{ dateFormat: 'm-d-Y' }}
+                value={date}
+                onChange={(date) => setDate(date)}
+                ref={fp}
+                placeholder="Select Date"
+              />
+              <button
+                className="btn btn-outline-secondary"
+                type="button"
+                id="button-addon2"
+                onClick={() => {
+                  if (!fp?.current?.flatpickr) return;
+                  fp.current.flatpickr.open();
+                }}
+              >
+                <i className="far fa-calendar-alt"></i>
+              </button>
+            </div>
+          </Col>
+          <Col xs="auto" className="p-1">
+            <Form.Label htmlFor="inlineFormInput" visuallyHidden>
+              Comment
+            </Form.Label>
+            <Form.Control
+              className="mb-2"
+              id="inlineFormInput"
+              placeholder="Comment"
+              type="text"
+              value={comments}
+              onChange={(e) => setComments(e.target.value)}
+            />
+          </Col>
+          <Col xs="auto">
+            <Button type="submit" className="mb-2">
+              <i className="fas fa-search"></i>
+            </Button>
+            &nbsp;
+            <LinkContainer to={`/create-catalog/`}>
+              <Button className="mb-2">
+                <i className="fas fa-plus"></i>
+              </Button>
+            </LinkContainer>
+          </Col>
+        </Row>
+      </Form>
 
       {loading ? (
         <Loader />

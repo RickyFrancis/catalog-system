@@ -32,9 +32,11 @@ export const catalogListReducer = (state = { catalogs: [] }, action) => {
     case CATALOG_LIST_SUCCESS:
       return {
         loading: false,
-        catalogs: action.payload,
-        pages: action.payload.pages,
+        catalogs: action.payload.entries,
         page: action.payload.page,
+        pageSize: action.payload.pageSize,
+        total: action.payload.total,
+        pages: action.payload.pages,
       };
     case CATALOG_LIST_FAIL:
       return { loading: false, error: action.payload };
@@ -43,15 +45,18 @@ export const catalogListReducer = (state = { catalogs: [] }, action) => {
   }
 };
 
-export const productDetailsReducer = (
-  state = { product: { reviews: [] } },
+export const catalogDetailsReducer = (
+  state = { loading: false, catalog: {} },
   action
 ) => {
   switch (action.type) {
     case CATALOG_DETAILS_REQUEST:
       return { loading: true, ...state };
     case CATALOG_DETAILS_SUCCESS:
-      return { loading: false, product: action.payload };
+      return {
+        loading: false,
+        catalog: action.payload,
+      };
     case CATALOG_DETAILS_FAIL:
       return { loading: false, error: action.payload };
     default:
@@ -72,12 +77,12 @@ export const productDeleteReducer = (state = {}, action) => {
   }
 };
 
-export const productCreateReducer = (state = {}, action) => {
+export const catalogCreateReducer = (state = {}, action) => {
   switch (action.type) {
     case CATALOG_CREATE_REQUEST:
       return { loading: true };
     case CATALOG_CREATE_SUCCESS:
-      return { loading: false, success: true, product: action.payload };
+      return { loading: false, success: true, catalog: action.payload };
     case CATALOG_CREATE_FAIL:
       return { loading: false, error: action.payload };
     case CATALOG_CREATE_RESET:

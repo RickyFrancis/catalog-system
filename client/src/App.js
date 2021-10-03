@@ -9,6 +9,7 @@ import Footer from './components/Footer';
 import HomeScreen from './screens/HomeScreen';
 import LoginScreen from './screens/LoginScreen';
 import CreateCatalogScreen from './screens/CreateCatalogScreen';
+import EditCatalogScreen from './screens/EditCatalogScreen';
 
 import { Container } from 'react-bootstrap';
 
@@ -20,6 +21,7 @@ const App = () => {
       <main className="py-3">
         <Container>
           <Route path="/create-catalog" component={CreateCatalogScreen} />
+          <Route path="/edit-catalog/:id" component={EditCatalogScreen} />
           <Route path="/login" component={LoginScreen} />
           <Route path="/page/:pageNumber" component={HomeScreen} exact />
           <Route path="/search/:keyword" component={HomeScreen} exact />

@@ -18,7 +18,7 @@ x-auth-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoicmlja3kiLCJpc0Fkb
 
 
 ###
-GET {{url}}/api/entries?pageNumber=1&pageSize=50&sortBy=entryNumber&order=asc&entryNumber=36
+GET {{url}}/api/entries?pageNumber=1&pageSize=50&sortBy=entryNumber&order=asc&entryNumber=
 x-auth-token: {{adminToken}}
 
 

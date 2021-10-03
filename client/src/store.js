@@ -21,13 +21,17 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 //   userUpdateReducer,
 // } from './reducers/userReducers';
 
-import { catalogListReducer } from './reducers/catalogReducers';
+import {
+  catalogListReducer,
+  catalogDetailsReducer,
+  catalogCreateReducer,
+} from './reducers/catalogReducers';
 
 const reducer = combineReducers({
   catalogList: catalogListReducer,
-  //   productDetails: productDetailsReducer,
+  catalogDetails: catalogDetailsReducer,
   //   productDelete: productDeleteReducer,
-  //   productCreate: productCreateReducer,
+  catalogCreate: catalogCreateReducer,
   //   productUpdate: productUpdateReducer,
   //   productReviewCreate: productReviewCreateReducer,
   //   productTopRated: productTopRatedReducer,
