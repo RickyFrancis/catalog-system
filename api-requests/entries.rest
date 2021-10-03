@@ -18,7 +18,7 @@ x-auth-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoicmlja3kiLCJpc0Fkb
 
 
 ###
-GET {{url}}/api/entries?pageNumber=1&pageSize=50&sortBy=entryNumber&order=asc&entryNumber=36
+GET {{url}}/api/entries?pageNumber=1&pageSize=50&sortBy=entryNumber&order=asc&date=2021-08-17T02:18:22.000+00:00
 x-auth-token: {{adminToken}}
 
 
@@ -30,7 +30,7 @@ Content-Type: {{contentType}}
 x-auth-token: {{adminToken}}
 
 {
-  "entryNumber": 1,
+  "entryNumber": 1001,
   "title": "Hellow",
   "author": "Ricky Rozario"
 }

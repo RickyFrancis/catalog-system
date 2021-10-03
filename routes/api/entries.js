@@ -10,13 +10,12 @@ router.get('/', auth, async (req, res) => {
   let pageNumber = Number(req.query.pageNumber) || 1;
   let searchParameter = {};
   let sortParams = {};
-  req.query.order === 'desc' ? sortParams.order = req.query.sortBy : sortParams.order = 'asc';
+  req.query.order === 'asc' ? sortParams.order = req.query.sortBy : sortParams.order = 'desc';
   req.query.sortBy ? sortParams.sortBy = req.query.sortBy : sortParams.sortBy = 'date';
 
   const sortObject = {};
   sortObject[sortParams.sortBy] = sortObject.order;
-  console.log(req.query.entryNumber);
-  req.query.entryNumber ? searchParameter.entryNumber = req.query.entryNumber : {};
+  req.query.entryNumber ? searchParameter.entryNumber = parseInt(req.query.entryNumber) : {};
   req.query.author ? searchParameter.author = {
     $regex: req.query.author,
     $options: 'i'
@@ -25,10 +24,7 @@ router.get('/', auth, async (req, res) => {
     $regex: req.query.title,
     $options: 'i'
   } : {};
-  req.query.date ? searchParameter.date = {
-    $regex: req.query.date,
-    $options: 'i'
-  } : {};
+  req.query.date ? searchParameter.date = { $gte: new Date(req.query.date).setHours(00, 00, 00), $lt: new Date(req.query.date).setHours(11, 59, 59) } : {};
   req.query.comments ? searchParameter.comments = {
     $regex: req.query.comments,
     $options: 'i'
@@ -107,7 +103,7 @@ router.post('/', auth, async (req, res) => {
 
     let entry = await Entry.findOne({ entryNumber: req.body.entryNumber });
     if (entry) return res.status(400).json({
-      errors: [
+      error: [
         {
           msg: "Entry Number Already Exists"
         }
