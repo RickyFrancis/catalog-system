@@ -18,11 +18,7 @@ x-auth-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoicmlja3kiLCJpc0Fkb
 
 
 ###
-<<<<<<< HEAD
-GET {{url}}/api/entries?pageNumber=1&pageSize=50&sortBy=entryNumber&order=asc&entryNumber=
-=======
 GET {{url}}/api/entries?pageNumber=1&pageSize=50&sortBy=entryNumber&order=asc&date=2021-08-17T02:18:22.000+00:00
->>>>>>> 26a44478f3e517686ff0814317df1669aba87664
 x-auth-token: {{adminToken}}
 
 

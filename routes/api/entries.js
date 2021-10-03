@@ -9,45 +9,6 @@ router.get('/', auth, async (req, res) => {
   let pageNumber = Number(req.query.pageNumber) || 1;
   let searchParameter = {};
   let sortParams = {};
-<<<<<<< HEAD
-  req.query.order === 'desc'
-    ? (sortParams.order = req.query.sortBy)
-    : (sortParams.order = 'asc');
-  req.query.sortBy
-    ? (sortParams.sortBy = req.query.sortBy)
-    : (sortParams.sortBy = 'date');
-
-  const sortObject = {};
-  sortObject[sortParams.sortBy] = sortObject.order;
-  req.query.entryNumber
-    ? (searchParameter.entryNumber = req.query.entryNumber)
-    : {};
-  req.query.author
-    ? (searchParameter.author = {
-        $regex: req.query.author,
-        $options: 'i',
-      })
-    : {};
-
-  req.query.title
-    ? (searchParameter.title = {
-        $regex: req.query.title,
-        $options: 'i',
-      })
-    : {};
-  req.query.date
-    ? (searchParameter.date = {
-        $regex: req.query.date,
-        $options: 'i',
-      })
-    : {};
-  req.query.comments
-    ? (searchParameter.comments = {
-        $regex: req.query.comments,
-        $options: 'i',
-      })
-    : {};
-=======
   req.query.order === 'asc' ? sortParams.order = req.query.sortBy : sortParams.order = 'desc';
   req.query.sortBy ? sortParams.sortBy = req.query.sortBy : sortParams.sortBy = 'date';
 
@@ -67,7 +28,6 @@ router.get('/', auth, async (req, res) => {
     $regex: req.query.comments,
     $options: 'i'
   } : {};
->>>>>>> 26a44478f3e517686ff0814317df1669aba87664
 
   try {
     const count = await Entry.countDocuments({ ...searchParameter });
