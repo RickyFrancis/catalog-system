@@ -10,9 +10,20 @@
 
 @contentType = application/json
 
-@adminToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxNTdlM2RiMmIwY2I4NDJmMjQ2ODYyOSIsImlzQWRtaW4iOnRydWUsImlhdCI6MTYzMzE3MDYyNX0.vD1yUqq_lwd68Wb8nu8QtFtMt9U9YWlbt1_35OmCTQA
+@adminToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxNTkyZDZiNzRhODZmMzQyNmVmYzQ0MyIsImlzQWRtaW4iOnRydWUsImlhdCI6MTYzMzIzNDI4M30.DCqQrpe02415-pWCiidfsGve746Vt4S1SnHJjE-A17g
 
 
+GET {{url}}/api/entries
+x-auth-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoicmlja3kiLCJpc0FkbWluIjp0cnVlfQ.3SAosAkfh49GtFA1t30-7ImmoIKzAgbtxYsthn-R8wM
+
+
+###
+GET {{url}}/api/entries?pageNumber=1&pageSize=50&sortBy=entryNumber&order=asc&entryNumber=36
+x-auth-token: {{adminToken}}
+
+
+
+###
 
 POST {{url}}/api/entries
 Content-Type: {{contentType}}
