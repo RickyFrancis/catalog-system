@@ -9,7 +9,7 @@ import { LinkContainer } from 'react-router-bootstrap';
 import { listCatalogDetails } from '../actions/catalogActions';
 import { useDispatch, useSelector } from 'react-redux';
 
-const EditCatalogScreen = ({ match }) => {
+const ViewCatalogScreen = ({ match }) => {
   const catalogId = match.params.id;
 
   const dispatch = useDispatch();
@@ -24,10 +24,14 @@ const EditCatalogScreen = ({ match }) => {
   const [comments, setComments] = useState('');
 
   useEffect(() => {
-    if (!catalog || !catalog.title || catalog._id !== match.params.id) {
+    if (
+      !catalog ||
+      !catalog.title ||
+      catalog._id.toString() !== match.params.id
+    ) {
       dispatch(listCatalogDetails(match.params.id));
     } else {
-      setNumber(catalog.entryNumber);
+      setNumber(catalog.number);
       setTitle(catalog.title);
       setAuthor(catalog.author);
       setDate(new Date());
@@ -116,4 +120,4 @@ const EditCatalogScreen = ({ match }) => {
   );
 };
 
-export default EditCatalogScreen;
+export default ViewCatalogScreen;

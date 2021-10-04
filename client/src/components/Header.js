@@ -31,9 +31,9 @@ const Header = () => {
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="me-auto">
-              <Route
+              {/* <Route
                 render={({ history }) => <SearchBox history={history} />}
-              />
+              /> */}
             </Nav>
             <Nav>
               <LinkContainer to={`/create-catalog/`}>
