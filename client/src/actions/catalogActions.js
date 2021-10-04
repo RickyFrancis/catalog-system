@@ -21,6 +21,7 @@ import {
   CATALOG_TOP_REQUEST,
   CATALOG_TOP_SUCCESS,
   CATALOG_TOP_FAIL,
+  CATALOG_LIST_REMOVE_ITEM,
 } from '../constants/catalogConstants';
 
 // export const listProducts =
@@ -50,6 +51,7 @@ import {
 export const listCatalogs =
   (
     pageNumber = '',
+    pageSize = '',
     sortBy = '',
     order = '',
     entryNumber = '',
@@ -69,7 +71,7 @@ export const listCatalogs =
       };
 
       const { data } = await axios.get(
-        `/api/entries?pageNumber=${pageNumber}&sortBy=${sortBy}&order=${order}&entryNumber=${entryNumber}&author=${author}&title=${title}&comments=${comments}&date=${date}`,
+        `/api/entries?pageNumber=${pageNumber}&pageSize=${pageSize}&sortBy=${sortBy}&order=${order}&entryNumber=${entryNumber}&author=${author}&title=${title}&comments=${comments}&date=${date}`,
         config
       );
 
@@ -94,7 +96,14 @@ export const listCatalogDetails = (id) => async (dispatch) => {
 
     console.log(id);
 
-    const { data } = await axios.get(`http://localhost:5000/api/entries/${id}`);
+    const config = {
+      headers: {
+        'x-auth-token':
+          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoicmlja3kiLCJpc0FkbWluIjp0cnVlfQ.3SAosAkfh49GtFA1t30-7ImmoIKzAgbtxYsthn-R8wM',
+      },
+    };
+
+    const { data } = await axios.get(`/api/entries/${id}`, config);
 
     dispatch({
       type: CATALOG_DETAILS_SUCCESS,
@@ -111,24 +120,35 @@ export const listCatalogDetails = (id) => async (dispatch) => {
   }
 };
 
-export const deleteProduct = (id) => async (dispatch, getState) => {
+export const deleteCatalog = (id) => async (dispatch, getState) => {
   try {
     dispatch({ type: CATALOG_DELETE_REQUEST });
 
-    const {
-      userLogin: { userInfo },
-    } = getState();
+    // const {
+    //   userLogin: { userInfo },
+    // } = getState();
+
+    // const config = {
+    //   headers: {
+    //     Authorization: `Bearer ${userInfo.token}`,
+    //   },
+    // };
 
     const config = {
       headers: {
-        Authorization: `Bearer ${userInfo.token}`,
+        'x-auth-token':
+          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoicmlja3kiLCJpc0FkbWluIjp0cnVlfQ.3SAosAkfh49GtFA1t30-7ImmoIKzAgbtxYsthn-R8wM',
       },
     };
 
-    await axios.delete(`/api/products/${id}`, config);
+    await axios.delete(`/api/entries/${id}`, config);
 
     dispatch({
       type: CATALOG_DELETE_SUCCESS,
+    });
+    dispatch({
+      type: CATALOG_LIST_REMOVE_ITEM,
+      payload: id,
     });
   } catch (error) {
     dispatch({
@@ -158,6 +178,10 @@ export const createCatalog =
         },
       };
 
+      if (date === '') {
+        date = new Date();
+      }
+
       const { data } = await axios.post(
         `/api/entries/`,
         {
@@ -185,41 +209,56 @@ export const createCatalog =
     }
   };
 
-export const updateProduct = (product) => async (dispatch, getState) => {
-  try {
-    dispatch({ type: CATALOG_UPDATE_REQUEST });
+export const updateCatalog =
+  (_id, entryNumber, title, author, date, comments) =>
+  async (dispatch, getState) => {
+    try {
+      dispatch({ type: CATALOG_UPDATE_REQUEST });
 
-    const {
-      userLogin: { userInfo },
-    } = getState();
+      // const {
+      //   userLogin: { userInfo },
+      // } = getState();
 
-    const config = {
-      'Content-Type': 'application/json',
-      headers: {
-        Authorization: `Bearer ${userInfo.token}`,
-      },
-    };
+      // const config = {
+      //   'Content-Type': 'application/json',
+      //   headers: {
+      //     Authorization: `Bearer ${userInfo.token}`,
+      //   },
+      // };
 
-    const { data } = await axios.put(
-      `/api/products/${product._id}`,
-      product,
-      config
-    );
+      const config = {
+        headers: {
+          'x-auth-token':
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoicmlja3kiLCJpc0FkbWluIjp0cnVlfQ.3SAosAkfh49GtFA1t30-7ImmoIKzAgbtxYsthn-R8wM',
+        },
+      };
 
-    dispatch({
-      type: CATALOG_UPDATE_SUCCESS,
-      payload: data,
-    });
-  } catch (error) {
-    dispatch({
-      type: CATALOG_UPDATE_FAIL,
-      payload:
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message,
-    });
-  }
-};
+      const { data } = await axios.put(
+        `/api/entries/${_id}`,
+        {
+          entryNumber,
+          title,
+          author,
+          date,
+          comments,
+        },
+        config
+      );
+
+      dispatch({
+        type: CATALOG_UPDATE_SUCCESS,
+        payload: data,
+      });
+    } catch (error) {
+      dispatch({
+        type: CATALOG_UPDATE_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };
 
 export const createProductReview =
   (productId, review) => async (dispatch, getState) => {

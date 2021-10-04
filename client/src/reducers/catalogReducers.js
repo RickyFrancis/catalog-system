@@ -23,6 +23,7 @@ import {
   CATALOG_TOP_FAIL,
   CATALOG_TOP_SUCCESS,
   CATALOG_TOP_REQUEST,
+  CATALOG_LIST_REMOVE_ITEM,
 } from '../constants/catalogConstants';
 
 export const catalogListReducer = (state = { catalogs: [] }, action) => {
@@ -37,6 +38,14 @@ export const catalogListReducer = (state = { catalogs: [] }, action) => {
         pageSize: action.payload.pageSize,
         total: action.payload.total,
         pages: action.payload.pages,
+      };
+    case CATALOG_LIST_REMOVE_ITEM:
+      return {
+        ...state,
+        catalogs: state.catalogs.filter(
+          (catalog) => catalog._id !== action.payload
+        ),
+        total: state.total - 1,
       };
     case CATALOG_LIST_FAIL:
       return { loading: false, error: action.payload };
@@ -64,7 +73,7 @@ export const catalogDetailsReducer = (
   }
 };
 
-export const productDeleteReducer = (state = {}, action) => {
+export const catalogDeleteReducer = (state = {}, action) => {
   switch (action.type) {
     case CATALOG_DELETE_REQUEST:
       return { loading: true };
@@ -92,12 +101,12 @@ export const catalogCreateReducer = (state = {}, action) => {
   }
 };
 
-export const productUpdateReducer = (state = { product: {} }, action) => {
+export const catalogUpdateReducer = (state = { catalog: {} }, action) => {
   switch (action.type) {
     case CATALOG_UPDATE_REQUEST:
       return { loading: true };
     case CATALOG_UPDATE_SUCCESS:
-      return { loading: false, success: true, product: action.payload };
+      return { loading: false, success: true, catalog: action.payload };
     case CATALOG_UPDATE_FAIL:
       return { loading: false, error: action.payload };
     case CATALOG_UPDATE_RESET:

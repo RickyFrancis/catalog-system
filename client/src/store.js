@@ -25,14 +25,16 @@ import {
   catalogListReducer,
   catalogDetailsReducer,
   catalogCreateReducer,
+  catalogDeleteReducer,
+  catalogUpdateReducer,
 } from './reducers/catalogReducers';
 
 const reducer = combineReducers({
   catalogList: catalogListReducer,
   catalogDetails: catalogDetailsReducer,
-  //   productDelete: productDeleteReducer,
+  catalogDelete: catalogDeleteReducer,
   catalogCreate: catalogCreateReducer,
-  //   productUpdate: productUpdateReducer,
+  catalogUpdate: catalogUpdateReducer,
   //   productReviewCreate: productReviewCreateReducer,
   //   productTopRated: productTopRatedReducer,
   //   userLogin: userLoginReducer,

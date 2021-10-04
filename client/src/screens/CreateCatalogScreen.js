@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 
 import { Form, Button, InputGroup } from 'react-bootstrap';
 
@@ -9,6 +9,7 @@ import { createCatalog } from '../actions/catalogActions';
 import { useDispatch, useSelector } from 'react-redux';
 import Message from '../components/Message';
 import Loader from '../components/Loader';
+import { CATALOG_CREATE_RESET } from '../constants/catalogConstants';
 
 const CreateCatalogScreen = () => {
   const dispatch = useDispatch();
@@ -20,12 +21,16 @@ const CreateCatalogScreen = () => {
   const [comments, setComments] = useState('');
 
   const catalogCreate = useSelector((state) => state.catalogCreate);
-  const { loading, error, catalog } = catalogCreate;
+  const { loading, error, catalog, success } = catalogCreate;
 
   const submitHandler = (e) => {
     e.preventDefault();
     dispatch(createCatalog(entryNumber, title, author, date, comments));
   };
+
+  useEffect(() => {
+    dispatch({ type: CATALOG_CREATE_RESET });
+  }, []);
 
   const fp = useRef(null);
 
@@ -102,12 +107,8 @@ const CreateCatalogScreen = () => {
           Create
         </Button>
       </Form>
-      {/* {error &&
-        error.map((err) => {
-          <Message variant="danger">{err.msg}</Message>;
-        })} */}
+      {success && <Message>Entry created</Message>}
       {error && <Message variant="danger">{error}</Message>}
-
       {loading && <Loader />}
     </>
   );
