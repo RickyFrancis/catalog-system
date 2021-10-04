@@ -36,7 +36,7 @@ router.get('/', auth, async (req, res) => {
       .limit(pageSize)
       .skip((pageNumber - 1) * pageSize);
     if (count < 1) {
-      return res.status(404).send('Not found!');
+      return res.status(404).send('Not found');
     }
     res.status(200).send({
       entries: entries,
@@ -47,37 +47,19 @@ router.get('/', auth, async (req, res) => {
     });
   } catch (error) {
     console.log(error);
-    res.status(400).send({
-      error: [
-        {
-          msg: error.message,
-        },
-      ],
-    });
+    res.status(400).send(error.message);
   }
 });
 
 router.get('/:id', auth, async (req, res) => {
   const isValidObjectId = mongoDB.ObjectId.isValid(req.params.id);
   if (!isValidObjectId) {
-    return res.status(400).send({
-      error: [
-        {
-          msg: 'ObjectID is not valid',
-        },
-      ],
-    });
+    return res.status(400).send('ObjectID is not valid');
   }
   try {
     const entry = await Entry.findById(req.params.id);
     if (!entry) {
-      return res.status(404).send({
-        error: [
-          {
-            msg: 'Not found',
-          },
-        ],
-      });
+      return res.status(404).send('Not found');
     }
     res.status(200).send(entry);
   } catch (error) {
@@ -92,41 +74,22 @@ router.get('/:id', auth, async (req, res) => {
 });
 
 router.post('/', auth, async (req, res) => {
-  console.log(req.body);
-  console.log(new Date(req.body.date));
   req.body.date = new Date(req.body.date);
   try {
     const result = validateEntry(req.body);
+    console.log(result.error);
     if (result.error)
-      return res.status(400).send({
-        error: [
-          {
-            msg: result.error.details[0].message,
-          },
-        ],
-      });
+      return res.status(400).send(result.error.details[0].message);
 
     let entry = await Entry.findOne({ entryNumber: req.body.entryNumber });
-    if (entry) return res.status(400).json({
-      error: [
-        {
-          msg: "Entry Number Already Exists"
-        }
-      ]
-    });
+    if (entry) return res.status(400).send("Entry Number Already Exists");
 
     entry = new Entry(req.body);
     entry = await entry.save();
     res.status(200).send(entry);
   } catch (error) {
     console.log(error);
-    res.status(400).json({
-      error: [
-        {
-          msg: error.message,
-        },
-      ],
-    });
+    res.status(400).send(error.message);
   }
 });
 
