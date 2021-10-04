@@ -102,7 +102,14 @@ const CreateCatalogScreen = () => {
           Create
         </Button>
       </Form>
-      {error && <Message variant="danger">{error}</Message>}
+      {error &&
+        error.map((err) => {
+          <Message variant="danger">{err.msg}</Message>;
+        })}
+      {error && <Message variant="danger">{error[0].msg}</Message>}
+      {error && console.log(error)}
+      {error && console.log(error[0].msg)}
+
       {loading && <Loader />}
     </>
   );

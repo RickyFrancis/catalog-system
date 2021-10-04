@@ -18,7 +18,7 @@ x-auth-token: {{adminToken}}
 
 
 ###
-GET {{url}}/api/entries?pageNumber=1&pageSize=50&sortBy=entryNumber&order=asc
+GET {{url}}/api/entries?pageNumber=1&pageSize=50&sortBy=date&order=desc
 x-auth-token: {{adminToken}}
 
 ###

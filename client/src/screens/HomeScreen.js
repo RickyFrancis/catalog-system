@@ -37,7 +37,7 @@ const HomeScreen = ({ match }) => {
   const [date, setDate] = useState('');
   const [comments, setComments] = useState('');
   const [sortBy, setSortBy] = useState('date');
-  const [order, setOrder] = useState('desc');
+  const [order, setOrder] = useState('asc');
 
   const dispatch = useDispatch();
 
@@ -134,7 +134,7 @@ const HomeScreen = ({ match }) => {
               onChange={(e) => setAuthor(e.target.value)}
             />
           </Col>
-          <Col xs="auto" className="p-1">
+          <Col xs="auto" className="p-1 mt-2">
             <Form.Label htmlFor="inlineFormInput" visuallyHidden>
               Date
             </Form.Label>

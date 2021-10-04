@@ -9,25 +9,42 @@ router.get('/', auth, async (req, res) => {
   let pageNumber = Number(req.query.pageNumber) || 1;
   let searchParameter = {};
   let sortParams = {};
-  req.query.order === 'asc' ? sortParams.order = req.query.sortBy : sortParams.order = 'desc';
-  req.query.sortBy ? sortParams.sortBy = req.query.sortBy : sortParams.sortBy = 'date';
+  req.query.order === 'desc'
+    ? (sortParams.order = req.query.sortBy)
+    : (sortParams.order = 'asc');
+  req.query.sortBy
+    ? (sortParams.sortBy = req.query.sortBy)
+    : (sortParams.sortBy = 'date');
 
   const sortObject = {};
   sortObject[sortParams.sortBy] = sortObject.order;
-  req.query.entryNumber ? searchParameter.entryNumber = parseInt(req.query.entryNumber) : {};
-  req.query.author ? searchParameter.author = {
-    $regex: req.query.author,
-    $options: 'i'
-  } : {};
-  req.query.title ? searchParameter.title = {
-    $regex: req.query.title,
-    $options: 'i'
-  } : {};
-  req.query.date ? searchParameter.date = { $gte: new Date(req.query.date).setHours(00, 00, 00), $lt: new Date(req.query.date).setHours(11, 59, 59) } : {};
-  req.query.comments ? searchParameter.comments = {
-    $regex: req.query.comments,
-    $options: 'i'
-  } : {};
+  req.query.entryNumber
+    ? (searchParameter.entryNumber = parseInt(req.query.entryNumber))
+    : {};
+  req.query.author
+    ? (searchParameter.author = {
+        $regex: req.query.author,
+        $options: 'i',
+      })
+    : {};
+  req.query.title
+    ? (searchParameter.title = {
+        $regex: req.query.title,
+        $options: 'i',
+      })
+    : {};
+  req.query.date
+    ? (searchParameter.date = {
+        $gte: new Date(req.query.date).setHours(00, 00, 00),
+        $lt: new Date(req.query.date).setHours(11, 59, 59),
+      })
+    : {};
+  req.query.comments
+    ? (searchParameter.comments = {
+        $regex: req.query.comments,
+        $options: 'i',
+      })
+    : {};
 
   try {
     const count = await Entry.countDocuments({ ...searchParameter });
@@ -107,13 +124,14 @@ router.post('/', auth, async (req, res) => {
       });
 
     let entry = await Entry.findOne({ entryNumber: req.body.entryNumber });
-    if (entry) return res.status(400).json({
-      error: [
-        {
-          msg: "Entry Number Already Exists"
-        }
-      ]
-    });
+    if (entry)
+      return res.status(400).json({
+        error: [
+          {
+            msg: 'Entry Number Already Exists',
+          },
+        ],
+      });
 
     entry = new Entry(req.body);
     entry = await entry.save();
