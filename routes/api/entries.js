@@ -77,7 +77,6 @@ router.post('/', auth, async (req, res) => {
   req.body.date = new Date(req.body.date);
   try {
     const result = validateEntry(req.body);
-    console.log(result.error);
     if (result.error)
       return res.status(400).send(result.error.details[0].message);
 
@@ -87,6 +86,23 @@ router.post('/', auth, async (req, res) => {
     entry = new Entry(req.body);
     entry = await entry.save();
     res.status(200).send(entry);
+  } catch (error) {
+    console.log(error);
+    res.status(400).send(error.message);
+  }
+});
+
+
+
+
+router.delete('/:id', auth, async (req, res) => {
+  try {
+    const isValidObjectId = mongoDB.ObjectId.isValid(req.params.id);
+    if (!isValidObjectId) {
+      return res.status(400).send('ObjectID is not valid');
+    }
+    await Entry.findByIdAndDelete(req.params.id);
+    res.status(200).send('Deletion Successful');
   } catch (error) {
     console.log(error);
     res.status(400).send(error.message);
