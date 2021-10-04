@@ -104,7 +104,27 @@ router.post('/', auth, async (req, res) => {
 });
 
 
+router.put('/:id', auth, async (req, res) => {
+  const isValidObjectId = mongoDB.ObjectId.isValid(req.params.id);
+  if (!isValidObjectId) {
+    return res.status(400).send('ObjectID is not valid');
+  }
+  try {
+    const result = validateEntry(req.body);
+    if (result.error)
+      return res.status(400).send(result.error.details[0].message);
 
+    let entries = await Entry.findById(req.params.id);
+    if (!entries) return res.status(200).send('Not found!');
+
+    entries = await Entry.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    res.status(200).send(entries);
+  } catch (error) {
+    console.log(error);
+    res.status(400).send(error.message);
+  }
+
+})
 
 router.delete('/:id', auth, async (req, res) => {
   try {

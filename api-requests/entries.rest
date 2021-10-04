@@ -51,6 +51,20 @@ x-auth-token: {{adminToken}}
 
 
 ###
+PUT {{url}}/api/entries/615a7416a914a3b59e8b591a
+Content-Type: {{contentType}}
+x-auth-token: {{adminToken}}
+
+{
+  "entryNumber": 1001,
+  "title": "Hellow",
+  "author": "Ricky Rozario and Ansarul Kabir Sohan",
+  "date": "2021-10-04T03:04:02.737Z",
+  "comments": "Random Comment has been edited"
+}
+
+
+###
 
 DELETE {{url}}/api/entries/615a7a37a914a3b59e8b598f
 Content-Type: {{contentType}}
