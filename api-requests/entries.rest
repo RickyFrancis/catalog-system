@@ -16,6 +16,10 @@
 GET {{url}}/api/entries
 x-auth-token: {{adminToken}}
 
+###
+GET {{url}}/api/entries/615a7416a914a3b59e8b591a
+x-auth-token: {{adminToken}}
+
 
 ###
 GET {{url}}/api/entries?pageNumber=1&pageSize=50&sortBy=entryNumber&entryNumber=8
@@ -31,7 +35,7 @@ x-auth-token: {{adminToken}}
   "entryNumber": 1001,
   "title": "Hellow",
   "author": "Ricky Rozario",
-  "date": 1633316524889,
+  "date": "",
   "comments": "Random Comment"
 }
 
@@ -44,3 +48,10 @@ x-auth-token: {{adminToken}}
   "date": "2021-10-04T03:04:02.737Z",
   "comments": "another Random Comment"
 }
+
+
+###
+
+DELETE {{url}}/api/entries/615a7a37a914a3b59e8b598f
+Content-Type: {{contentType}}
+x-auth-token: {{adminToken}}

@@ -32,7 +32,7 @@ const validateEntry = function (entry) {
     entryNumber: Joi.number().required(),
     title: Joi.string().required(),
     author: Joi.string().required(),
-    date: Joi.date(),
+    date: Joi.date().empty(),
     comments: Joi.string()
   });
   return schema.validate(entry);
