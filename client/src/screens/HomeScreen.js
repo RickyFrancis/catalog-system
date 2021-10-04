@@ -210,7 +210,7 @@ const HomeScreen = ({ match }) => {
               onChange={(e) => setSortBy(e.target.value)}
             >
               <option>Sort by</option>
-              <option value="number">Number</option>
+              <option value="entryNumber">Entry Number</option>
               <option value="title">Title</option>
               <option value="author">Author</option>
               <option value="date">Date</option>
