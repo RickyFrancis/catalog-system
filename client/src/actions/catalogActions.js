@@ -81,8 +81,8 @@ export const listCatalogs =
       dispatch({
         type: CATALOG_LIST_FAIL,
         payload:
-          error.response && error.response.data.message
-            ? error.response.data.message
+          error.response && error.response.data
+            ? error.response.data
             : error.message,
       });
     }
@@ -92,9 +92,9 @@ export const listCatalogDetails = (id) => async (dispatch) => {
   try {
     dispatch({ type: CATALOG_DETAILS_REQUEST });
 
-    const { data } = await axios.get(
-      `https://jsonplaceholder.typicode.com/todos/${id}`
-    );
+    console.log(id);
+
+    const { data } = await axios.get(`http://localhost:5000/api/entries/${id}`);
 
     dispatch({
       type: CATALOG_DETAILS_SUCCESS,
@@ -104,8 +104,8 @@ export const listCatalogDetails = (id) => async (dispatch) => {
     dispatch({
       type: CATALOG_DETAILS_FAIL,
       payload:
-        error.response && error.response.data.message
-          ? error.response.data.message
+        error.response && error.response.data
+          ? error.response.data
           : error.message,
     });
   }
@@ -175,18 +175,11 @@ export const createCatalog =
         payload: data,
       });
     } catch (error) {
-      console.log(error.response);
-      const errors = error.response.data.error;
-
-      // if (errors) {
-      //   errors.forEach((error) => dispatch(setAlert(error.msg, 'error')));
-      // }
-
       dispatch({
         type: CATALOG_CREATE_FAIL,
         payload:
-          error.response && error.response.data.error
-            ? error.response.data.error
+          error.response && error.response.data
+            ? error.response.data
             : error.message,
       });
     }

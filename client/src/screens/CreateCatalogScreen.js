@@ -31,12 +31,12 @@ const CreateCatalogScreen = () => {
 
   return (
     <>
-      <Form onSubmit={submitHandler}>
+      <Form onSubmit={submitHandler} className="mb-3">
         <Form.Group controlId="entryNumber" className="mb-3">
           <Form.Label>Number</Form.Label>
           <Form.Control
             type="text"
-            placeholder="Enter entryNumber"
+            placeholder="Enter entry number"
             value={entryNumber}
             onChange={(e) => setEntryNumber(e.target.value)}
           ></Form.Control>
@@ -70,7 +70,7 @@ const CreateCatalogScreen = () => {
             value={date}
             onChange={(date) => setDate(date)}
             ref={fp}
-            placeholder="Select Date"
+            placeholder="Select date"
           />
           <button
             className="btn btn-outline-secondary"
@@ -102,13 +102,11 @@ const CreateCatalogScreen = () => {
           Create
         </Button>
       </Form>
-      {error &&
+      {/* {error &&
         error.map((err) => {
           <Message variant="danger">{err.msg}</Message>;
-        })}
-      {error && <Message variant="danger">{error[0].msg}</Message>}
-      {error && console.log(error)}
-      {error && console.log(error[0].msg)}
+        })} */}
+      {error && <Message variant="danger">{error}</Message>}
 
       {loading && <Loader />}
     </>

@@ -108,7 +108,7 @@ const HomeScreen = ({ match }) => {
               onChange={(e) => setEntryNumber(e.target.value)}
             />
           </Col>
-          <Col xs="auto" className="p-1">
+          <Col xs="auto">
             <Form.Label htmlFor="inlineFormInput" visuallyHidden>
               Title
             </Form.Label>
@@ -121,7 +121,7 @@ const HomeScreen = ({ match }) => {
               onChange={(e) => setTitle(e.target.value)}
             />
           </Col>
-          <Col xs="auto" className="p-1">
+          <Col xs="auto">
             <Form.Label htmlFor="inlineFormInput" visuallyHidden>
               Author
             </Form.Label>
@@ -159,9 +159,20 @@ const HomeScreen = ({ match }) => {
               >
                 <i className="far fa-calendar-alt"></i>
               </button>
+              <button
+                className="btn btn-outline-danger"
+                type="button"
+                id="button-addon2"
+                onClick={() => {
+                  if (!fp?.current?.flatpickr) return;
+                  fp.current.flatpickr.clear();
+                }}
+              >
+                <i className="fas fa-times"></i>
+              </button>
             </div>
           </Col>
-          <Col xs="auto" className="p-1">
+          <Col xs="auto">
             <Form.Label htmlFor="inlineFormInput" visuallyHidden>
               Comment
             </Form.Label>
@@ -174,16 +185,11 @@ const HomeScreen = ({ match }) => {
               onChange={(e) => setComments(e.target.value)}
             />
           </Col>
+
           <Col xs="auto">
             <Button type="submit" className="mb-2">
               <i className="fas fa-search"></i>
             </Button>
-            &nbsp;
-            <LinkContainer to={`/create-catalog/`}>
-              <Button className="mb-2">
-                <i className="fas fa-plus"></i>
-              </Button>
-            </LinkContainer>
           </Col>
         </Row>
       </Form>

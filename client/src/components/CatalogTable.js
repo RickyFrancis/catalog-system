@@ -37,14 +37,21 @@ const CatalogTable = ({ catalogs }) => {
               <td>{catalog.title}</td>
               <td>{catalog.author}</td>
               <td>{format(new Date(catalog.date), 'PP')}</td>
-              <td>{catalog.comments}</td>
+              <td>{`${catalog.comments.substring(0, 80)}...`}</td>
 
               <td>
-                <LinkContainer to={`/edit-catalog/${catalog.id}`}>
+                <LinkContainer to={`/view-catalog/${catalog._id}`}>
+                  <Button variant="primary" className="btn-sm">
+                    <i className="fas fa-eye"></i>
+                  </Button>
+                </LinkContainer>
+                &nbsp;
+                <LinkContainer to={`/edit-catalog/${catalog._id}`}>
                   <Button variant="light" className="btn-sm">
                     <i className="fas fa-edit"></i>
                   </Button>
                 </LinkContainer>
+                &nbsp;
                 <Button
                   variant="danger"
                   className="btn-sm"

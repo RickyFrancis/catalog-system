@@ -10,6 +10,7 @@ import HomeScreen from './screens/HomeScreen';
 import LoginScreen from './screens/LoginScreen';
 import CreateCatalogScreen from './screens/CreateCatalogScreen';
 import EditCatalogScreen from './screens/EditCatalogScreen';
+import ViewCatalogScreen from './screens/ViewCatalogScreen';
 
 import { Container } from 'react-bootstrap';
 
@@ -22,6 +23,7 @@ const App = () => {
         <Container>
           <Route path="/create-catalog" component={CreateCatalogScreen} />
           <Route path="/edit-catalog/:id" component={EditCatalogScreen} />
+          <Route path="/view-catalog/:id" component={ViewCatalogScreen} />
           <Route path="/login" component={LoginScreen} />
           <Route path="/page/:pageNumber" component={HomeScreen} exact />
           <Route path="/search/:keyword" component={HomeScreen} exact />
