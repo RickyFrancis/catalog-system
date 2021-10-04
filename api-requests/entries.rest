@@ -32,11 +32,11 @@ Content-Type: {{contentType}}
 x-auth-token: {{adminToken}}
 
 {
-  "entryNumber": 1001,
+  "entryNumber": 300,
   "title": "Hellow",
   "author": "Ricky Rozario",
-  "date": "",
-  "comments": "Random Comment"
+  "date": "2021-10-04T03:04:02.737Z",
+  "comments": ""
 }
 
 ###
@@ -51,7 +51,7 @@ x-auth-token: {{adminToken}}
 
 
 ###
-PUT {{url}}/api/entries/615a7416a914a3b59e8b591a
+PUT {{url}}/api/entries/615aaf2543c0e9b9ab4bfd9f
 Content-Type: {{contentType}}
 x-auth-token: {{adminToken}}
 
@@ -59,8 +59,8 @@ x-auth-token: {{adminToken}}
   "entryNumber": 1001,
   "title": "Hellow",
   "author": "Ricky Rozario and Ansarul Kabir Sohan",
-  "date": "2021-10-04T03:04:02.737Z",
-  "comments": "Random Comment has been edited"
+  "date": "",
+  "comments": ""
 }
 
 

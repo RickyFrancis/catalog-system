@@ -9,15 +9,14 @@ router.get('/', auth, async (req, res) => {
   let pageNumber = Number(req.query.pageNumber) || 1;
   let searchParameter = {};
   let sortParams = {};
-  req.query.order === 'desc'
-    ? (sortParams.order = req.query.sortBy)
-    : (sortParams.order = 'asc');
+  req.query.order && req.query.order === 'desc'
+    ? (sortParams.order = -1)
+    : (sortParams.order = 1);
   req.query.sortBy
     ? (sortParams.sortBy = req.query.sortBy)
     : (sortParams.sortBy = 'date');
 
-  const sortObject = {};
-  sortObject[sortParams.sortBy] = sortObject.order;
+  const sortObject = [sortParams.sortBy.toString(), sortParams.order];
   req.query.entryNumber
     ? (searchParameter.entryNumber = parseInt(req.query.entryNumber))
     : {};
@@ -49,7 +48,7 @@ router.get('/', auth, async (req, res) => {
   try {
     const count = await Entry.countDocuments({ ...searchParameter });
     const entries = await Entry.find({ ...searchParameter })
-      .sort({ ...sortObject })
+      .sort([sortObject])
       .limit(pageSize)
       .skip((pageNumber - 1) * pageSize);
     if (count < 1) {
@@ -111,11 +110,16 @@ router.put('/:id', auth, async (req, res) => {
   }
   try {
     const result = validateEntry(req.body);
-    if (result.error)
+    if (result.error) {
+      console.log(result.error)
       return res.status(400).send(result.error.details[0].message);
+    }
 
     let entries = await Entry.findById(req.params.id);
     if (!entries) return res.status(200).send('Not found!');
+
+    // let entryDoesExist = await Entry.find({ entryNumber: req.body.entryNumber });
+    // if (entryDoesExist) return res.status(200).send('Entry Number Already exists. Please provide an unique number');
 
     entries = await Entry.findByIdAndUpdate(req.params.id, req.body, { new: true });
     res.status(200).send(entries);

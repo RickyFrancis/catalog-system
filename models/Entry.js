@@ -18,7 +18,7 @@ const entrySchema = new mongoose.Schema({
   date: {
     type: Date,
     required: true,
-    default: new Date(Date.now())
+    default: Date.now
   },
   comments: {
     type: String,
@@ -32,8 +32,8 @@ const validateEntry = function (entry) {
     entryNumber: Joi.number().required(),
     title: Joi.string().required(),
     author: Joi.string().required(),
-    date: Joi.date().empty(),
-    comments: Joi.string()
+    date: Joi.string(),
+    comments: Joi.string().empty('')
   });
   return schema.validate(entry);
 }
