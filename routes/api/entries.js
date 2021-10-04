@@ -23,27 +23,27 @@ router.get('/', auth, async (req, res) => {
     : {};
   req.query.author
     ? (searchParameter.author = {
-        $regex: req.query.author,
-        $options: 'i',
-      })
+      $regex: req.query.author,
+      $options: 'i',
+    })
     : {};
   req.query.title
     ? (searchParameter.title = {
-        $regex: req.query.title,
-        $options: 'i',
-      })
+      $regex: req.query.title,
+      $options: 'i',
+    })
     : {};
   req.query.date
     ? (searchParameter.date = {
-        $gte: new Date(req.query.date).setHours(00, 00, 00),
-        $lt: new Date(req.query.date).setHours(11, 59, 59),
-      })
+      $gte: new Date(req.query.date).setHours(00, 00, 00),
+      $lt: new Date(req.query.date).setHours(11, 59, 59),
+    })
     : {};
   req.query.comments
     ? (searchParameter.comments = {
-        $regex: req.query.comments,
-        $options: 'i',
-      })
+      $regex: req.query.comments,
+      $options: 'i',
+    })
     : {};
 
   try {
@@ -80,13 +80,7 @@ router.get('/:id', auth, async (req, res) => {
     }
     res.status(200).send(entry);
   } catch (error) {
-    res.status(400).send({
-      error: [
-        {
-          msg: error.message,
-        },
-      ],
-    });
+    res.status(400).send(error.message);
   }
 });
 
