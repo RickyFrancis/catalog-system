@@ -13,13 +13,7 @@ router.get('/me', auth, async (req, res) => {
     res.status(200).send(user);
   } catch (error) {
     console.log(error);
-    res.status(400).json({
-      errors: [
-        {
-          msg: error.message
-        }
-      ]
-    })
+    res.status(400).send(error.message)
   }
 });
 
@@ -31,13 +25,7 @@ router.get('/', auth, authAdmin, async (req, res) => {
     res.status(200).send(users);
   } catch (error) {
     console.log(error);
-    res.status(400).json({
-      errors: [
-        {
-          msg: error.message
-        }
-      ]
-    });
+    res.status(400).send(error.message);
   }
 });
 
@@ -45,23 +33,11 @@ router.get('/', auth, authAdmin, async (req, res) => {
 router.post('/', async (req, res) => {
   try {
     const result = validateUser(req.body);
-    if (result.error) return res.status(400).json({
-      errors: [
-        {
-          msg: result.error.details[0].message
-        }
-      ]
-    });
+    if (result.error) return res.status(400).send(result.error.details[0].message);
 
 
     let user = await User.findOne({ email: req.body.email });
-    if (user) return res.status(400).json({
-      errors: [
-        {
-          msg: "User Already Exists"
-        }
-      ]
-    });
+    if (user) return res.status(400).send("User Already Exists");
     const salt = await bcrypt.genSalt(12);
     const password = await bcrypt.hash(req.body.password, salt);
 
@@ -76,13 +52,7 @@ router.post('/', async (req, res) => {
     res.status(200).header('x-auth-token', token).send(_.pick(user, ['_id', 'name', 'email']));
   } catch (error) {
     console.error(error);
-    res.status(400).json({
-      errors: [
-        {
-          msg: error.message
-        }
-      ]
-    });
+    res.status(400).send(error.message);
   }
 });
 
