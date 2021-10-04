@@ -13,6 +13,7 @@
 ### Get Token
 POST {{url}}/api/auth
 Content-Type: {{contentType}}
+
 {
   "email": "sohan@ndub.edu.bd",
   "password": "rickyonkjaura"

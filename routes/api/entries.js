@@ -96,27 +96,17 @@ router.post('/', auth, async (req, res) => {
   console.log(new Date(req.body.date));
   req.body.date = new Date(req.body.date);
   try {
-    // const result = validateEntry(req.body);
-    // if (result.error)
-    //   return res.status(400).send({
-    //     error: [
-    //       {
-    //         msg: result.error.details[0].message,
-    //       },
-    //     ],
-    //   });
-
-    let entry = await Entry.findOne({ entryNumber: req.body.entryNumber });
-<<<<<<< HEAD
-    if (entry)
-      return res.status(400).json({
-        errors: [
+    const result = validateEntry(req.body);
+    if (result.error)
+      return res.status(400).send({
+        error: [
           {
-            msg: 'Entry Number Already Exists',
+            msg: result.error.details[0].message,
           },
         ],
       });
-=======
+
+    let entry = await Entry.findOne({ entryNumber: req.body.entryNumber });
     if (entry) return res.status(400).json({
       error: [
         {
@@ -124,7 +114,6 @@ router.post('/', auth, async (req, res) => {
         }
       ]
     });
->>>>>>> 26a44478f3e517686ff0814317df1669aba87664
 
     entry = new Entry(req.body);
     entry = await entry.save();

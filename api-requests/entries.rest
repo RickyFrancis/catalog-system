@@ -10,18 +10,16 @@
 
 @contentType = application/json
 
-@adminToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxNTkyZDZiNzRhODZmMzQyNmVmYzQ0MyIsImlzQWRtaW4iOnRydWUsImlhdCI6MTYzMzIzNDI4M30.DCqQrpe02415-pWCiidfsGve746Vt4S1SnHJjE-A17g
+@adminToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxNTllYTU0OWRjNGZiZTAwN2QzMjRhNiIsImlzQWRtaW4iOnRydWUsImlhdCI6MTYzMzI4Mjc2Mn0.OS68g8RHc_GxJ520WkeBKSmwiy7JSfx6NRrEZXeY7Jo
 
 
 GET {{url}}/api/entries
-x-auth-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoicmlja3kiLCJpc0FkbWluIjp0cnVlfQ.3SAosAkfh49GtFA1t30-7ImmoIKzAgbtxYsthn-R8wM
-
-
-###
-GET {{url}}/api/entries?pageNumber=1&pageSize=50&sortBy=entryNumber&order=asc&date=2021-08-17T02:18:22.000+00:00
 x-auth-token: {{adminToken}}
 
 
+###
+GET {{url}}/api/entries?pageNumber=1&pageSize=50&sortBy=entryNumber&order=asc
+x-auth-token: {{adminToken}}
 
 ###
 
