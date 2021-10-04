@@ -67,12 +67,11 @@ export const listCatalogs =
             'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoicmlja3kiLCJpc0FkbWluIjp0cnVlfQ.3SAosAkfh49GtFA1t30-7ImmoIKzAgbtxYsthn-R8wM',
         },
       };
+
       const { data } = await axios.get(
         `/api/entries?pageNumber=${pageNumber}&sortBy=${sortBy}&order=${order}&entryNumber=${entryNumber}&author=${author}&title=${title}&comments=${comments}&date=${date}`,
         config
       );
-
-      console.log(data);
 
       dispatch({
         type: CATALOG_LIST_SUCCESS,
@@ -176,11 +175,18 @@ export const createCatalog =
         payload: data,
       });
     } catch (error) {
+      console.log(error.response);
+      const errors = error.response.data.error;
+
+      // if (errors) {
+      //   errors.forEach((error) => dispatch(setAlert(error.msg, 'error')));
+      // }
+
       dispatch({
         type: CATALOG_CREATE_FAIL,
         payload:
-          error.response && error.response.data.message
-            ? error.response.data.message
+          error.response && error.response.data.error
+            ? error.response.data.error
             : error.message,
       });
     }
