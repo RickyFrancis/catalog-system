@@ -11,11 +11,12 @@ import {
   Form,
   InputGroup,
   FormControl,
+  Pagination,
 } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { listCatalogs } from '../actions/catalogActions';
+import { deleteCatalog, listCatalogs } from '../actions/catalogActions';
 
 import Paginate from '../components/Paginate';
 
@@ -26,28 +27,33 @@ import Message from '../components/Message';
 import Flatpickr from 'react-flatpickr';
 
 const HomeScreen = ({ match }) => {
-  const keyword = match.params.keyword;
-
-  const pageSize = 10;
-  const pageNumber = match.params.pageNumber || 1;
-
   const [entryNumber, setEntryNumber] = useState('');
   const [title, setTitle] = useState('');
   const [author, setAuthor] = useState('');
   const [date, setDate] = useState('');
   const [comments, setComments] = useState('');
-  const [sortBy, setSortBy] = useState('date');
-  const [order, setOrder] = useState('asc');
+  const [sortBy, setSortBy] = useState('');
+  const [order, setOrder] = useState('');
+  const [pageNumber, setPageNumber] = useState('');
+  const [pageSize, setPageSize] = useState('');
 
   const dispatch = useDispatch();
 
   const catalogList = useSelector((state) => state.catalogList);
   const { loading, error, catalogs, page, pages } = catalogList;
 
+  const catalogDelete = useSelector((state) => state.catalogDelete);
+  const {
+    loading: loadingDelete,
+    error: errorDelete,
+    success: successDelete,
+  } = catalogDelete;
+
   useEffect(() => {
     dispatch(
       listCatalogs(
         pageNumber,
+        pageSize,
         sortBy,
         order,
         entryNumber,
@@ -59,13 +65,15 @@ const HomeScreen = ({ match }) => {
     );
   }, [
     dispatch,
-    keyword,
     pageNumber,
+    pageSize,
     entryNumber,
     author,
     title,
     comments,
     date,
+    sortBy,
+    order,
   ]);
 
   const submitHandler = (e) => {
@@ -73,6 +81,7 @@ const HomeScreen = ({ match }) => {
     dispatch(
       listCatalogs(
         pageNumber,
+        pageSize,
         sortBy,
         order,
         entryNumber,
@@ -82,18 +91,18 @@ const HomeScreen = ({ match }) => {
         date
       )
     );
-    // if (keyword.trim()) {
-    //   history.push(`/search/${keyword}`);
-    // } else {
-    //   history.push('/');
-    // }
+  };
+
+  const changePage = (e, pageNumber) => {
+    e.preventDefault();
+    setPageNumber(pageNumber);
   };
 
   const fp = useRef(null);
 
   return (
     <>
-      <Form className="mb-2" onSubmit={submitHandler}>
+      <Form className="mb-3" onSubmit={submitHandler}>
         <Row className="align-items-center">
           <Col xs="auto">
             <Form.Label htmlFor="inlineFormInput" visuallyHidden>
@@ -191,17 +200,74 @@ const HomeScreen = ({ match }) => {
               <i className="fas fa-search"></i>
             </Button>
           </Col>
+          <Col xs="auto">
+            <Form.Label htmlFor="inlineFormInput" visuallyHidden>
+              Sort by
+            </Form.Label>
+            <Form.Select
+              aria-label="Sort by"
+              className="mb-2"
+              onChange={(e) => setSortBy(e.target.value)}
+            >
+              <option>Sort by</option>
+              <option value="number">Number</option>
+              <option value="title">Title</option>
+              <option value="author">Author</option>
+              <option value="date">Date</option>
+              <option value="comment">Comment</option>
+            </Form.Select>
+          </Col>
+
+          <Col xs="auto">
+            <Form.Select
+              aria-label="Sort by"
+              className="mb-2"
+              onChange={(e) => setOrder(e.target.value)}
+            >
+              <option>Order</option>
+              <option value="asc">Ascending</option>
+              <option value="desc">Descending</option>
+            </Form.Select>
+          </Col>
+          <Col xs="auto">
+            <Form.Select
+              aria-label="Sort by"
+              className="mb-2"
+              onChange={(e) => setPageSize(e.target.value)}
+            >
+              <option>Page Size</option>
+              <option value="5">5</option>
+              <option value="10">10</option>
+              <option value="15">15</option>
+              <option value="20">20</option>
+              <option value="10">25</option>
+            </Form.Select>
+          </Col>
         </Row>
       </Form>
+
+      {successDelete && <Message>Entry Deleted</Message>}
 
       {loading ? (
         <Loader />
       ) : error ? (
-        <Message variant="danger">{error}</Message>
+        <Message variant="warning">{error}</Message>
       ) : (
         <>
           <CatalogTable catalogs={catalogs} />
-          <Paginate pages={20} page={page} keyword={keyword ? keyword : ''} />
+          {pages > 1 && (
+            <Pagination>
+              {[...Array(pages).keys()].map((x) => (
+                <Pagination.Item
+                  active={x + 1 === page}
+                  onClick={(e) => setPageNumber(x + 1)}
+                >
+                  {x + 1}
+                </Pagination.Item>
+              ))}
+            </Pagination>
+          )}
+          {/* <Paginate pages={pages} page={page} changePage={changePage} /> */}
         </>
       )}
     </>

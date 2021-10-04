@@ -17,7 +17,7 @@ const ViewCatalogScreen = ({ match }) => {
   const catalogDetails = useSelector((state) => state.catalogDetails);
   const { loading, error, catalog } = catalogDetails;
 
-  const [number, setNumber] = useState('');
+  const [entryNumber, setEntryNumber] = useState('');
   const [title, setTitle] = useState('');
   const [author, setAuthor] = useState('');
   const [date, setDate] = useState('');
@@ -31,7 +31,7 @@ const ViewCatalogScreen = ({ match }) => {
     ) {
       dispatch(listCatalogDetails(match.params.id));
     } else {
-      setNumber(catalog.number);
+      setEntryNumber(catalog.entryNumber);
       setTitle(catalog.title);
       setAuthor(catalog.author);
       setDate(new Date());
@@ -47,13 +47,13 @@ const ViewCatalogScreen = ({ match }) => {
 
   return (
     <Form onSubmit={submitHandler}>
-      <Form.Group controlId="number" className="mb-3">
+      <Form.Group controlId="entryNumber" className="mb-3">
         <Form.Label>Number</Form.Label>
         <Form.Control
           type="text"
-          placeholder="Enter number"
-          value={number}
-          onChange={(e) => setNumber(e.target.value)}
+          placeholder="Enter entry number"
+          value={entryNumber}
+          readOnly
         ></Form.Control>
       </Form.Group>
       <Form.Group controlId="title" className="mb-3">
@@ -62,7 +62,7 @@ const ViewCatalogScreen = ({ match }) => {
           type="text"
           placeholder="Enter title"
           value={title}
-          onChange={(e) => setTitle(e.target.value)}
+          readOnly
         ></Form.Control>
       </Form.Group>
       <Form.Group controlId="author" className="mb-3">
@@ -71,7 +71,7 @@ const ViewCatalogScreen = ({ match }) => {
           type="text"
           placeholder="Enter author"
           value={author}
-          onChange={(e) => setAuthor(e.target.value)}
+          readOnly
         ></Form.Control>
       </Form.Group>
       <Form.Group controlId="date">
@@ -83,18 +83,18 @@ const ViewCatalogScreen = ({ match }) => {
           style={{ background: '#FFF' }}
           options={{ dateFormat: 'm-d-Y' }}
           value={date}
-          onChange={(date) => setDate(date)}
           ref={fp}
           placeholder="Select Date"
+          disabled
         />
         <button
           className="btn btn-outline-secondary"
           type="button"
           id="button-addon2"
-          onClick={() => {
-            if (!fp?.current?.flatpickr) return;
-            fp.current.flatpickr.open();
-          }}
+          //   onClick={() => {
+          //     if (!fp?.current?.flatpickr) return;
+          //     fp.current.flatpickr.open();
+          //   }}
         >
           <i className="far fa-calendar-alt"></i>
         </button>
@@ -106,16 +106,16 @@ const ViewCatalogScreen = ({ match }) => {
           placeholder="Leave a comment here"
           style={{ height: '100px' }}
           value={comments}
-          onChange={(e) => setComments(e.target.value)}
+          readOnly
         ></Form.Control>
       </Form.Group>
 
       <LinkContainer to={`/`} style={{ marginRight: '10px' }}>
         <Button variant="secondary">Back</Button>
       </LinkContainer>
-      <Button type="submit" variant="primary">
-        Update
-      </Button>
+      <LinkContainer to={`/edit-catalog/${catalog._id}`}>
+        <Button variant="primary">Edit</Button>
+      </LinkContainer>
     </Form>
   );
 };
