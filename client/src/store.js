@@ -11,15 +11,15 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 //   productTopRatedReducer,
 // } from './reducers/productReducers';
 
-// import {
-//   userLoginReducer,
-//   userRegisterReducer,
-//   userDetailsReducer,
-//   userUpdateProfileReducer,
-//   userListReducer,
-//   userDeleteReducer,
-//   userUpdateReducer,
-// } from './reducers/userReducers';
+import {
+  userLoginReducer,
+  userRegisterReducer,
+  userDetailsReducer,
+  userUpdateProfileReducer,
+  userListReducer,
+  userDeleteReducer,
+  userUpdateReducer,
+} from './reducers/userReducers';
 
 import {
   catalogListReducer,
@@ -37,7 +37,7 @@ const reducer = combineReducers({
   catalogUpdate: catalogUpdateReducer,
   //   productReviewCreate: productReviewCreateReducer,
   //   productTopRated: productTopRatedReducer,
-  //   userLogin: userLoginReducer,
+  userLogin: userLoginReducer,
   //   userRegister: userRegisterReducer,
   //   userDetails: userDetailsReducer,
   //   userUpdateProfile: userUpdateProfileReducer,
