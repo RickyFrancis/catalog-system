@@ -41,7 +41,7 @@ const EditCatalogScreen = ({ match }) => {
       setEntryNumber(catalog.entryNumber);
       setTitle(catalog.title);
       setAuthor(catalog.author);
-      setDate(new Date());
+      setDate(catalog.date);
       setComments(catalog.comments);
     }
   }, [dispatch, catalog, match]);
@@ -98,7 +98,7 @@ const EditCatalogScreen = ({ match }) => {
             style={{ background: '#FFF' }}
             options={{ dateFormat: 'm-d-Y' }}
             value={date}
-            onChange={(date) => setDate(date)}
+            onChange={(date) => setDate(new Date(date))}
             ref={fp}
             placeholder="Select Date"
           />

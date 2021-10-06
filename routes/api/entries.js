@@ -3,6 +3,7 @@ const _ = require('lodash');
 const auth = require('../../middlewares/auth');
 const mongoDB = require('mongodb');
 const router = require('express').Router();
+const reqDebugger = require('debug')('app:requestDebugger');
 
 router.get('/', auth, async (req, res) => {
   let pageSize = Number(req.query.pageSize) || 10;
@@ -84,8 +85,10 @@ router.get('/:id', auth, async (req, res) => {
 });
 
 router.post('/', auth, async (req, res) => {
+  reqDebugger(req.body);
   req.body.date = new Date(req.body.date);
   try {
+
     const result = validateEntry(req.body);
     if (result.error)
       return res.status(400).send(result.error.details[0].message);
@@ -104,11 +107,13 @@ router.post('/', auth, async (req, res) => {
 
 
 router.put('/:id', auth, async (req, res) => {
+  req.body.date = new Date(req.body.date);
   const isValidObjectId = mongoDB.ObjectId.isValid(req.params.id);
   if (!isValidObjectId) {
     return res.status(400).send('ObjectID is not valid');
   }
   try {
+    reqDebugger(req.body);
     const result = validateEntry(req.body);
     if (result.error) {
       console.log(result.error)

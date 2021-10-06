@@ -73,7 +73,7 @@ const CreateCatalogScreen = () => {
             style={{ background: '#FFF' }}
             options={{ dateFormat: 'm-d-Y' }}
             value={date}
-            onChange={(date) => setDate(date)}
+            onChange={(date) => setDate(new Date(date))}
             ref={fp}
             placeholder="Select date"
           />
