@@ -48,6 +48,11 @@ import {
 //     }
 //     };
 
+const getIP = async () => {
+  const res = await axios.get('https://geolocation-db.com/json/');
+  return res;
+};
+
 export const listCatalogs =
   (
     pageNumber = '',
@@ -60,35 +65,35 @@ export const listCatalogs =
     comments = '',
     date = ''
   ) =>
-    async (dispatch) => {
-      try {
-        dispatch({ type: CATALOG_LIST_REQUEST });
-        const config = {
-          headers: {
-            'x-auth-token':
-              'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoicmlja3kiLCJpc0FkbWluIjp0cnVlfQ.3SAosAkfh49GtFA1t30-7ImmoIKzAgbtxYsthn-R8wM',
-          },
-        };
+  async (dispatch) => {
+    try {
+      dispatch({ type: CATALOG_LIST_REQUEST });
+      const config = {
+        headers: {
+          'x-auth-token':
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoicmlja3kiLCJpc0FkbWluIjp0cnVlfQ.3SAosAkfh49GtFA1t30-7ImmoIKzAgbtxYsthn-R8wM',
+        },
+      };
 
-        const { data } = await axios.get(
-          `/api/entries?pageNumber=${pageNumber}&pageSize=${pageSize}&sortBy=${sortBy}&order=${order}&entryNumber=${entryNumber}&author=${author}&title=${title}&comments=${comments}&date=${date}`,
-          config
-        );
+      const { data } = await axios.get(
+        `/api/entries?pageNumber=${pageNumber}&pageSize=${pageSize}&sortBy=${sortBy}&order=${order}&entryNumber=${entryNumber}&author=${author}&title=${title}&comments=${comments}&date=${date}`,
+        config
+      );
 
-        dispatch({
-          type: CATALOG_LIST_SUCCESS,
-          payload: data,
-        });
-      } catch (error) {
-        dispatch({
-          type: CATALOG_LIST_FAIL,
-          payload:
-            error.response && error.response.data
-              ? error.response.data
-              : error.message,
-        });
-      }
-    };
+      dispatch({
+        type: CATALOG_LIST_SUCCESS,
+        payload: data,
+      });
+    } catch (error) {
+      dispatch({
+        type: CATALOG_LIST_FAIL,
+        payload:
+          error.response && error.response.data
+            ? error.response.data
+            : error.message,
+      });
+    }
+  };
 
 export const listCatalogDetails = (id) => async (dispatch) => {
   try {
@@ -163,106 +168,106 @@ export const deleteCatalog = (id) => async (dispatch, getState) => {
 
 export const createCatalog =
   (entryNumber, title, author, date, comments) =>
-    async (dispatch, getState) => {
-      try {
-        dispatch({ type: CATALOG_CREATE_REQUEST });
+  async (dispatch, getState) => {
+    try {
+      dispatch({ type: CATALOG_CREATE_REQUEST });
 
-        // const {
-        //   userLogin: { userInfo },
-        // } = getState();
+      // const {
+      //   userLogin: { userInfo },
+      // } = getState();
 
-        const config = {
-          headers: {
-            'x-auth-token':
-              'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoicmlja3kiLCJpc0FkbWluIjp0cnVlfQ.3SAosAkfh49GtFA1t30-7ImmoIKzAgbtxYsthn-R8wM',
-          },
-        };
+      const config = {
+        headers: {
+          'x-auth-token':
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoicmlja3kiLCJpc0FkbWluIjp0cnVlfQ.3SAosAkfh49GtFA1t30-7ImmoIKzAgbtxYsthn-R8wM',
+        },
+      };
 
-        if (date === '') {
-          date = new Date();
-        }
-
-        const { data } = await axios.post(
-          `/api/entries/`,
-          {
-            entryNumber,
-            title,
-            author,
-            date,
-            comments,
-          },
-          config
-        );
-
-        dispatch({
-          type: CATALOG_CREATE_SUCCESS,
-          payload: data,
-        });
-      } catch (error) {
-        dispatch({
-          type: CATALOG_CREATE_FAIL,
-          payload:
-            error.response && error.response.data
-              ? error.response.data
-              : error.message,
-        });
+      if (date === '') {
+        date = new Date();
       }
-    };
+
+      const { data } = await axios.post(
+        `/api/entries/`,
+        {
+          entryNumber,
+          title,
+          author,
+          date,
+          comments,
+        },
+        config
+      );
+
+      dispatch({
+        type: CATALOG_CREATE_SUCCESS,
+        payload: data,
+      });
+    } catch (error) {
+      dispatch({
+        type: CATALOG_CREATE_FAIL,
+        payload:
+          error.response && error.response.data
+            ? error.response.data
+            : error.message,
+      });
+    }
+  };
 
 export const updateCatalog =
   (_id, entryNumber, title, author, date, comments) =>
-    async (dispatch, getState) => {
-      try {
-        dispatch({ type: CATALOG_UPDATE_REQUEST });
+  async (dispatch, getState) => {
+    try {
+      dispatch({ type: CATALOG_UPDATE_REQUEST });
 
-        // const {
-        //   userLogin: { userInfo },
-        // } = getState();
+      // const {
+      //   userLogin: { userInfo },
+      // } = getState();
 
-        // const config = {
-        //   'Content-Type': 'application/json',
-        //   headers: {
-        //     Authorization: `Bearer ${userInfo.token}`,
-        //   },
-        // };
+      // const config = {
+      //   'Content-Type': 'application/json',
+      //   headers: {
+      //     Authorization: `Bearer ${userInfo.token}`,
+      //   },
+      // };
 
-        const config = {
-          headers: {
-            'x-auth-token':
-              'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoicmlja3kiLCJpc0FkbWluIjp0cnVlfQ.3SAosAkfh49GtFA1t30-7ImmoIKzAgbtxYsthn-R8wM',
-          },
-        };
+      const config = {
+        headers: {
+          'x-auth-token':
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoicmlja3kiLCJpc0FkbWluIjp0cnVlfQ.3SAosAkfh49GtFA1t30-7ImmoIKzAgbtxYsthn-R8wM',
+        },
+      };
 
-        if (date === '') {
-          date = new Date();
-        }
-
-        const { data } = await axios.put(
-          `/api/entries/${_id}`,
-          {
-            entryNumber,
-            title,
-            author,
-            date,
-            comments,
-          },
-          config
-        );
-
-        dispatch({
-          type: CATALOG_UPDATE_SUCCESS,
-          payload: data,
-        });
-      } catch (error) {
-        dispatch({
-          type: CATALOG_UPDATE_FAIL,
-          payload:
-            error.response && error.response.data.message
-              ? error.response.data.message
-              : error.message,
-        });
+      if (date === '') {
+        date = new Date();
       }
-    };
+
+      const { data } = await axios.put(
+        `/api/entries/${_id}`,
+        {
+          entryNumber,
+          title,
+          author,
+          date,
+          comments,
+        },
+        config
+      );
+
+      dispatch({
+        type: CATALOG_UPDATE_SUCCESS,
+        payload: data,
+      });
+    } catch (error) {
+      dispatch({
+        type: CATALOG_UPDATE_FAIL,
+        payload:
+          error.response && error.response.data
+            ? error.response.data
+            : error.message,
+      });
+    }
+  };
 
 export const createProductReview =
   (productId, review) => async (dispatch, getState) => {

@@ -11,7 +11,7 @@ import Message from '../components/Message';
 import Loader from '../components/Loader';
 import { CATALOG_CREATE_RESET } from '../constants/catalogConstants';
 
-const CreateCatalogScreen = () => {
+const CreateCatalogScreen = ({ history }) => {
   const dispatch = useDispatch();
 
   const [entryNumber, setEntryNumber] = useState('');
@@ -31,6 +31,14 @@ const CreateCatalogScreen = () => {
   useEffect(() => {
     dispatch({ type: CATALOG_CREATE_RESET });
   }, []);
+
+  useEffect(() => {
+    if (success) {
+      setTimeout(() => {
+        history.push(`/`);
+      }, 2000);
+    }
+  }, [success]);
 
   const fp = useRef(null);
 

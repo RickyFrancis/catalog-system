@@ -91,6 +91,7 @@ const ViewCatalogScreen = ({ match }) => {
           className="btn btn-outline-secondary"
           type="button"
           id="button-addon2"
+          disabled
           //   onClick={() => {
           //     if (!fp?.current?.flatpickr) return;
           //     fp.current.flatpickr.open();

@@ -26,7 +26,7 @@ import Message from '../components/Message';
 
 import Flatpickr from 'react-flatpickr';
 
-const HomeScreen = ({ match }) => {
+const HomeScreen = ({ history }) => {
   const [entryNumber, setEntryNumber] = useState('');
   const [title, setTitle] = useState('');
   const [author, setAuthor] = useState('');
@@ -35,9 +35,12 @@ const HomeScreen = ({ match }) => {
   const [sortBy, setSortBy] = useState('');
   const [order, setOrder] = useState('');
   const [pageNumber, setPageNumber] = useState('');
-  const [pageSize, setPageSize] = useState('');
+  const [pageSize, setPageSize] = useState(10);
 
   const dispatch = useDispatch();
+
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
 
   const catalogList = useSelector((state) => state.catalogList);
   const { loading, error, catalogs, page, pages } = catalogList;
@@ -50,19 +53,23 @@ const HomeScreen = ({ match }) => {
   } = catalogDelete;
 
   useEffect(() => {
-    dispatch(
-      listCatalogs(
-        pageNumber,
-        pageSize,
-        sortBy,
-        order,
-        entryNumber,
-        author,
-        title,
-        comments,
-        date
-      )
-    );
+    if (userInfo) {
+      dispatch(
+        listCatalogs(
+          pageNumber,
+          pageSize,
+          sortBy,
+          order,
+          entryNumber,
+          author,
+          title,
+          comments,
+          date
+        )
+      );
+    } else {
+      history.push('/login');
+    }
   }, [
     dispatch,
     pageNumber,
@@ -74,6 +81,8 @@ const HomeScreen = ({ match }) => {
     date,
     sortBy,
     order,
+    history,
+    userInfo,
   ]);
 
   const submitHandler = (e) => {
@@ -230,17 +239,20 @@ const HomeScreen = ({ match }) => {
             </Form.Select>
           </Col>
           <Col xs="auto">
+            <Form.Label htmlFor="inlineFormInput" visuallyHidden>
+              Show:
+            </Form.Label>
             <Form.Select
               aria-label="Sort by"
               className="mb-2"
               onChange={(e) => setPageSize(e.target.value)}
             >
-              <option>Page Size</option>
-              <option value="5">5</option>
+              {/* <option>Page Size</option> */}
+
               <option value="10">10</option>
-              <option value="15">15</option>
-              <option value="20">20</option>
-              <option value="10">25</option>
+              <option value="25">25</option>
+              <option value="50">50</option>
+              <option value="100">100</option>
             </Form.Select>
           </Col>
         </Row>

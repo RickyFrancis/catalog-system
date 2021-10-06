@@ -33,7 +33,7 @@ const CatalogTable = ({ catalogs }) => {
             <th>Title</th>
             <th>Author</th>
             <th>Date</th>
-            <th>Comment</th>
+            <th>Comments</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -45,7 +45,16 @@ const CatalogTable = ({ catalogs }) => {
                 <td>{catalog.title}</td>
                 <td>{catalog.author}</td>
                 <td>{format(new Date(catalog.date), 'PP')}</td>
-                <td>{`${catalog.comments.substring(0, 80)}...`}</td>
+                {/* ${catalog.comments.substring(0, 80)} */}
+                <td>
+                  {catalog.comments.length > 79 ? (
+                    `${catalog.comments.substring(0, 80)}...`
+                  ) : catalog.comments.length > 0 ? (
+                    catalog.comments
+                  ) : (
+                    <i>No Comments</i>
+                  )}
+                </td>
 
                 <td style={{ whiteSpace: 'nowrap' }}>
                   <LinkContainer to={`/view-catalog/${catalog._id}`}>
