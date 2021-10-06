@@ -10,9 +10,9 @@ router.get('/', auth, async (req, res) => {
   let pageNumber = Number(req.query.pageNumber) || 1;
   let searchParameter = {};
   let sortParams = {};
-  req.query.order && req.query.order === 'desc'
-    ? (sortParams.order = -1)
-    : (sortParams.order = 1);
+  req.query.order === 'asc'
+    ? (sortParams.order = 1)
+    : (sortParams.order = -1);
   req.query.sortBy
     ? (sortParams.sortBy = req.query.sortBy)
     : (sortParams.sortBy = 'date');
@@ -130,6 +130,7 @@ router.put('/:id', auth, async (req, res) => {
     res.status(200).send(entries);
   } catch (error) {
     console.log(error);
+    if (error.code === 11000) return res.status(400).send('Entry Number already exists.');
     res.status(400).send(error.message);
   }
 
