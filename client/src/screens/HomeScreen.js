@@ -43,7 +43,7 @@ const HomeScreen = ({ history }) => {
   const { userInfo } = userLogin;
 
   const catalogList = useSelector((state) => state.catalogList);
-  const { loading, error, catalogs, page, pages } = catalogList;
+  const { loading, error, catalogs, page, pages, total } = catalogList;
 
   const catalogDelete = useSelector((state) => state.catalogDelete);
   const {
@@ -267,8 +267,9 @@ const HomeScreen = ({ history }) => {
       ) : (
         <>
           <CatalogTable catalogs={catalogs} />
+
           {pages > 1 && (
-            <Pagination>
+            <Pagination className="mb-3">
               {[...Array(pages).keys()].map((x) => (
                 <Pagination.Item
                   active={x + 1 === page}
@@ -279,6 +280,8 @@ const HomeScreen = ({ history }) => {
               ))}
             </Pagination>
           )}
+
+          <small>{`${total} results found`}</small>
           {/* <Paginate pages={pages} page={page} changePage={changePage} /> */}
         </>
       )}
