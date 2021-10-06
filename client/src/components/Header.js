@@ -36,15 +36,20 @@ const Header = () => {
               /> */}
             </Nav>
             <Nav>
-              <LinkContainer to={`/create-catalog/`}>
-                <Button>
-                  <i className="fas fa-plus"></i> &nbsp; New Catalog
-                </Button>
-              </LinkContainer>
+              {userInfo && (
+                <LinkContainer to={`/create-catalog/`}>
+                  <Button>
+                    <i className="fas fa-plus"></i> &nbsp; New Catalog
+                  </Button>
+                </LinkContainer>
+              )}
               &nbsp;
               {/* userInfo.name.split(' ')[0] */}
               {userInfo ? (
-                <NavDropdown title={userInfo.user.name} id="username">
+                <NavDropdown
+                  title={userInfo.user.name.toUpperCase()}
+                  id="username"
+                >
                   <LinkContainer to="/profile">
                     <NavDropdown.Item>Profile</NavDropdown.Item>
                   </LinkContainer>

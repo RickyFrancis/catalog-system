@@ -13,21 +13,31 @@ import EditCatalogScreen from './screens/EditCatalogScreen';
 import ViewCatalogScreen from './screens/ViewCatalogScreen';
 
 import { Container } from 'react-bootstrap';
+import PrivateRoute from './routing/PrivateRoute';
 
 const App = () => {
   return (
     <Router>
       <Header />
-
       <main className="py-3">
         <Container>
-          <Route path="/create-catalog" component={CreateCatalogScreen} />
-          <Route path="/edit-catalog/:id" component={EditCatalogScreen} />
-          <Route path="/view-catalog/:id" component={ViewCatalogScreen} />
+          <PrivateRoute
+            path="/create-catalog"
+            component={CreateCatalogScreen}
+          />
+          <PrivateRoute
+            path="/edit-catalog/:id"
+            component={EditCatalogScreen}
+          />
+          <PrivateRoute
+            path="/view-catalog/:id"
+            component={ViewCatalogScreen}
+          />
           <Route path="/login" component={LoginScreen} />
-          <Route path="/page/:pageNumber" component={HomeScreen} exact />
-          <Route path="/search/:keyword" component={HomeScreen} exact />
-          <Route path="/" component={HomeScreen} exact />
+          {/* <Route path="/page/:pageNumber" component={HomeScreen} exact /> */}
+          {/* <Route path="/search/:keyword" component={HomeScreen} exact /> */}
+          <PrivateRoute exact path="/" component={HomeScreen} />
+          {/* <Route path="/" component={HomeScreen} exact /> */}
         </Container>
       </main>
 

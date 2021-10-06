@@ -110,7 +110,7 @@ export const catalogUpdateReducer = (state = { catalog: {} }, action) => {
     case CATALOG_UPDATE_FAIL:
       return { loading: false, error: action.payload };
     case CATALOG_UPDATE_RESET:
-      return { product: {} };
+      return { catalog: {} };
     default:
       return state;
   }

@@ -65,13 +65,17 @@ export const listCatalogs =
     comments = '',
     date = ''
   ) =>
-  async (dispatch) => {
+  async (dispatch, getState) => {
     try {
       dispatch({ type: CATALOG_LIST_REQUEST });
+
+      const {
+        userLogin: { userInfo },
+      } = getState();
+
       const config = {
         headers: {
-          'x-auth-token':
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoicmlja3kiLCJpc0FkbWluIjp0cnVlfQ.3SAosAkfh49GtFA1t30-7ImmoIKzAgbtxYsthn-R8wM',
+          'x-auth-token': userInfo.token,
         },
       };
 
@@ -95,16 +99,17 @@ export const listCatalogs =
     }
   };
 
-export const listCatalogDetails = (id) => async (dispatch) => {
+export const listCatalogDetails = (id) => async (dispatch, getState) => {
   try {
     dispatch({ type: CATALOG_DETAILS_REQUEST });
 
-    console.log(id);
+    const {
+      userLogin: { userInfo },
+    } = getState();
 
     const config = {
       headers: {
-        'x-auth-token':
-          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoicmlja3kiLCJpc0FkbWluIjp0cnVlfQ.3SAosAkfh49GtFA1t30-7ImmoIKzAgbtxYsthn-R8wM',
+        'x-auth-token': userInfo.token,
       },
     };
 
@@ -129,20 +134,13 @@ export const deleteCatalog = (id) => async (dispatch, getState) => {
   try {
     dispatch({ type: CATALOG_DELETE_REQUEST });
 
-    // const {
-    //   userLogin: { userInfo },
-    // } = getState();
-
-    // const config = {
-    //   headers: {
-    //     Authorization: `Bearer ${userInfo.token}`,
-    //   },
-    // };
+    const {
+      userLogin: { userInfo },
+    } = getState();
 
     const config = {
       headers: {
-        'x-auth-token':
-          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoicmlja3kiLCJpc0FkbWluIjp0cnVlfQ.3SAosAkfh49GtFA1t30-7ImmoIKzAgbtxYsthn-R8wM',
+        'x-auth-token': userInfo.token,
       },
     };
 
@@ -172,14 +170,13 @@ export const createCatalog =
     try {
       dispatch({ type: CATALOG_CREATE_REQUEST });
 
-      // const {
-      //   userLogin: { userInfo },
-      // } = getState();
+      const {
+        userLogin: { userInfo },
+      } = getState();
 
       const config = {
         headers: {
-          'x-auth-token':
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoicmlja3kiLCJpc0FkbWluIjp0cnVlfQ.3SAosAkfh49GtFA1t30-7ImmoIKzAgbtxYsthn-R8wM',
+          'x-auth-token': userInfo.token,
         },
       };
 
@@ -220,21 +217,13 @@ export const updateCatalog =
     try {
       dispatch({ type: CATALOG_UPDATE_REQUEST });
 
-      // const {
-      //   userLogin: { userInfo },
-      // } = getState();
-
-      // const config = {
-      //   'Content-Type': 'application/json',
-      //   headers: {
-      //     Authorization: `Bearer ${userInfo.token}`,
-      //   },
-      // };
+      const {
+        userLogin: { userInfo },
+      } = getState();
 
       const config = {
         headers: {
-          'x-auth-token':
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoicmlja3kiLCJpc0FkbWluIjp0cnVlfQ.3SAosAkfh49GtFA1t30-7ImmoIKzAgbtxYsthn-R8wM',
+          'x-auth-token': userInfo.token,
         },
       };
 
@@ -256,6 +245,11 @@ export const updateCatalog =
 
       dispatch({
         type: CATALOG_UPDATE_SUCCESS,
+        payload: data,
+      });
+
+      dispatch({
+        type: CATALOG_DETAILS_SUCCESS,
         payload: data,
       });
     } catch (error) {

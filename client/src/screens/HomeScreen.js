@@ -25,6 +25,7 @@ import Loader from '../components/Loader';
 import Message from '../components/Message';
 
 import Flatpickr from 'react-flatpickr';
+import { CATALOG_UPDATE_RESET } from '../constants/catalogConstants';
 
 const HomeScreen = ({ history }) => {
   const [entryNumber, setEntryNumber] = useState('');
@@ -54,6 +55,7 @@ const HomeScreen = ({ history }) => {
 
   useEffect(() => {
     if (userInfo) {
+      dispatch({ type: CATALOG_UPDATE_RESET });
       dispatch(
         listCatalogs(
           pageNumber,
