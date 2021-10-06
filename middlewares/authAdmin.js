@@ -1,5 +1,5 @@
 module.exports = function (req, res, next) {
-  if (user.isAdmin) {
+  if (req.user.isAdmin) {
     next();
   }
   else {

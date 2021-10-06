@@ -20,8 +20,8 @@ router.get('/me', auth, async (req, res) => {
 
 router.get('/', auth, authAdmin, async (req, res) => {
   try {
-    const users = await User.find();
-    if (!_.isEmpty(users)) return res.status(400).send('No User found');
+    const users = await User.find({}).select('-password');
+    if (_.isEmpty(users)) return res.status(400).send('No User found');
     res.status(200).send(users);
   } catch (error) {
     console.log(error);

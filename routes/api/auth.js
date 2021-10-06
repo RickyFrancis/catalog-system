@@ -6,7 +6,7 @@ const router = require('express').Router();
 
 
 router.post('/', async (req, res) => {
-  const {error} = validate(req.body);
+  const { error } = validate(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
   try {
@@ -17,7 +17,7 @@ router.post('/', async (req, res) => {
     if (!isValidPassword) return res.status(400).send('Invalid email or password');
 
     const token = user.generateAuthToken();
-    res.status(200).send(token);
+    res.status(200).send({ token, user: _.pick(user, ['_id', 'name', 'email']) });
   } catch (error) {
     console.error(error);
     res.status(400).send(error.message);
