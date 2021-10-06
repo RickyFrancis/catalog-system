@@ -10,6 +10,8 @@
 
 @contentType = application/json
 
+@adminToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxNTllYTU0OWRjNGZiZTAwN2QzMjRhNiIsImlzQWRtaW4iOnRydWUsImlhdCI6MTYzMzI4Mjc2Mn0.OS68g8RHc_GxJ520WkeBKSmwiy7JSfx6NRrEZXeY7Jo
+
 ### Get Token
 POST {{url}}/api/auth
 Content-Type: {{contentType}}

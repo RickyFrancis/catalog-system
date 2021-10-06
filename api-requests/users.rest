@@ -10,7 +10,7 @@
 
 @contentType = application/json
 
-
+@adminToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxNTllYTU0OWRjNGZiZTAwN2QzMjRhNiIsImlzQWRtaW4iOnRydWUsImlhdCI6MTYzMzI4Mjc2Mn0.OS68g8RHc_GxJ520WkeBKSmwiy7JSfx6NRrEZXeY7Jo
 
 ### Add an user
 ### Access  Public
@@ -23,5 +23,10 @@ Content-Type: {{contentType}}
   "password": "rickyonkjaura",
   "isAdmin": true
 }
+
+###
+GET {{url}}/api/users
+Content-Type: {{contentType}}
+x-auth-token: {{adminToken}}
 
 
