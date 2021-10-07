@@ -3,6 +3,8 @@ const authAdmin = require('../../middlewares/authAdmin');
 const { User, validateUser } = require('../../models/User');
 const _ = require('lodash');
 const bcrypt = require('bcryptjs');
+const mailHandler = require('../../controller/mailHandler');
+const config = require('config');
 
 const router = require('express').Router();
 
@@ -47,13 +49,36 @@ router.post('/', async (req, res) => {
       password: password,
       isAdmin: req.body.isAdmin
     });
-    await user.save();
-    const token = user.generateAuthToken();
-    res.status(200).header('x-auth-token', token).send(_.pick(user, ['_id', 'name', 'email']));
+    user = await user.save();
+    let url = `${config.get('url')}?id=${user._id}&code=${user.verificationCode}`
+    let isSuccessful = mailHandler(user.email, user.name, user.verificationCode, url);
+    if (!isSuccessful) throw new Error('Something went wrong');
+    else if (isSuccessful) {
+      res.status(200).send(_.pick(user, ['_id', 'name', 'email']));
+    }
   } catch (error) {
     console.error(error);
     res.status(400).send(error.message);
   }
 });
+
+router.post('/verify', async (req, res) => {
+  try {
+    let { id, code } = req.query;
+    let user = await User.findById(id);
+    if (!user) return res.status(400).send('User not found');
+    if (Number(code) !== user.verificationCode || !user.verificationCode) {
+      return res.status(200).send('Verification Failed');
+    }
+    user.isVerified = true;
+    user.verificationCode = null;
+    await user.save();
+    const token = user.generateAuthToken();
+    res.status(200).send({ token, user: _.pick(user, ['_id', 'name', 'email']) });
+  } catch (error) {
+    console.log(error);
+    res.status(400).send(error.message);
+  }
+})
 
 module.exports = router;
