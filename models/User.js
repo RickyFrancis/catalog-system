@@ -26,6 +26,16 @@ const userSchema = new mongoose.Schema({
     default: false,
     required: true
   },
+  isVerified: {
+    type: Boolean,
+    default: false
+  },
+  verificationCode: {
+    type: Number,
+    default: function () {
+      return parseInt(Math.floor(Math.random() * 900000) + 100000)
+    }
+  }
 });
 userSchema.methods.generateAuthToken = function () {
   const token = jwt.sign({ id: this._id, isAdmin: this.isAdmin }, config.get('jwtPrivateKey'));
