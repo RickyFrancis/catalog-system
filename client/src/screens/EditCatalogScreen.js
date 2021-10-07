@@ -12,7 +12,7 @@ import Message from '../components/Message';
 import Loader from '../components/Loader';
 import { CATALOG_UPDATE_RESET } from '../constants/catalogConstants';
 
-const EditCatalogScreen = ({ match }) => {
+const EditCatalogScreen = ({ match, history }) => {
   const catalogId = match.params.id;
 
   const dispatch = useDispatch();
@@ -35,16 +35,22 @@ const EditCatalogScreen = ({ match }) => {
   const [comments, setComments] = useState('');
 
   useEffect(() => {
-    if (!catalog || !catalog.title || catalog._id !== match.params.id) {
-      dispatch(listCatalogDetails(match.params.id));
+    if (successUpdate) {
+      setTimeout(() => {
+        history.push(`/`);
+      }, 2000);
     } else {
-      setEntryNumber(catalog.entryNumber);
-      setTitle(catalog.title);
-      setAuthor(catalog.author);
-      setDate(catalog.date);
-      setComments(catalog.comments);
+      if (!catalog || !catalog.title || catalog._id !== match.params.id) {
+        dispatch(listCatalogDetails(match.params.id));
+      } else {
+        setEntryNumber(catalog.entryNumber);
+        setTitle(catalog.title);
+        setAuthor(catalog.author);
+        setDate(catalog.date);
+        setComments(catalog.comments);
+      }
     }
-  }, [dispatch, catalog, match]);
+  }, [dispatch, catalog, match, successUpdate, history]);
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -53,9 +59,9 @@ const EditCatalogScreen = ({ match }) => {
     );
   };
 
-  useEffect(() => {
-    dispatch({ type: CATALOG_UPDATE_RESET });
-  }, []);
+  // useEffect(() => {
+  //   dispatch({ type: CATALOG_UPDATE_RESET });
+  // }, []);
 
   const fp = useRef(null);
 
