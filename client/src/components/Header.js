@@ -47,7 +47,7 @@ const Header = () => {
               {/* userInfo.name.split(' ')[0] */}
               {userInfo ? (
                 <NavDropdown
-                  title={userInfo.user.name.toUpperCase()}
+                  title={userInfo.user.name.split(' ')[0].toUpperCase()}
                   id="username"
                 >
                   <LinkContainer to="/profile">

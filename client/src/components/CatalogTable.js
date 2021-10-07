@@ -34,7 +34,7 @@ const CatalogTable = ({ catalogs }) => {
             <th>Author</th>
             <th>Date</th>
             <th>Comments</th>
-            <th>Actions</th>
+            <th className="text-center">Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -56,7 +56,7 @@ const CatalogTable = ({ catalogs }) => {
                   )}
                 </td>
 
-                <td style={{ whiteSpace: 'nowrap' }}>
+                <td style={{ whiteSpace: 'nowrap' }} className="text-center">
                   <LinkContainer to={`/view-catalog/${catalog._id}`}>
                     <Button variant="primary" className="btn-sm">
                       <i className="fas fa-eye"></i>
