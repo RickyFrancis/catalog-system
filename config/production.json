@@ -1,3 +1,5 @@
 {
-  "jwtPrivateKey": "itsAsecret"
+  "jwtPrivateKey": "itsAsecret",
+  "mailAddress": "noreply@ndub.edu.bd",
+  "mailService": "gmail"
 }

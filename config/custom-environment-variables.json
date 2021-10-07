@@ -1,3 +1,4 @@
 {
-  "jwtPrivateKey": "JWT_SECRET"
+  "jwtPrivateKey": "JWT_SECRET",
+  "mailPassword": "PW"
 }

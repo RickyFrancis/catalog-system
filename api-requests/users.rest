@@ -24,9 +24,29 @@ Content-Type: {{contentType}}
   "isAdmin": true
 }
 
+
+### Add an user
+### Access  Public
+POST {{url}}/api/users
+Content-Type: {{contentType}}
+
+{
+  "name": "joy",
+  "email": "joydhon@ndub.edu.bd",
+  "password": "rickyonkjaura",
+  "isAdmin": false
+}
+
 ###
 GET {{url}}/api/users
 Content-Type: {{contentType}}
 x-auth-token: {{adminToken}}
+
+###
+
+POST {{url}}/api/users/verify?id=615ec534f81f4f6d53202449&code=385844
+Content-Type: {{contentType}}
+
+
 
 
