@@ -11,6 +11,7 @@ import LoginScreen from './screens/LoginScreen';
 import CreateCatalogScreen from './screens/CreateCatalogScreen';
 import EditCatalogScreen from './screens/EditCatalogScreen';
 import ViewCatalogScreen from './screens/ViewCatalogScreen';
+import RegisterUserScreen from './screens/RegisterUserScreen';
 
 import { Container } from 'react-bootstrap';
 import PrivateRoute from './routing/PrivateRoute';
@@ -34,6 +35,7 @@ const App = () => {
             component={ViewCatalogScreen}
           />
           <Route path="/login" component={LoginScreen} />
+          <Route path="/register" component={RegisterUserScreen} />
           {/* <Route path="/page/:pageNumber" component={HomeScreen} exact /> */}
           {/* <Route path="/search/:keyword" component={HomeScreen} exact /> */}
           <PrivateRoute exact path="/" component={HomeScreen} />

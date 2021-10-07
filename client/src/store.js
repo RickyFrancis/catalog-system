@@ -38,7 +38,7 @@ const reducer = combineReducers({
   //   productReviewCreate: productReviewCreateReducer,
   //   productTopRated: productTopRatedReducer,
   userLogin: userLoginReducer,
-  //   userRegister: userRegisterReducer,
+  userRegister: userRegisterReducer,
   //   userDetails: userDetailsReducer,
   //   userUpdateProfile: userUpdateProfileReducer,
   //   userList: userListReducer,
