@@ -12,6 +12,8 @@ import CreateCatalogScreen from './screens/CreateCatalogScreen';
 import EditCatalogScreen from './screens/EditCatalogScreen';
 import ViewCatalogScreen from './screens/ViewCatalogScreen';
 import RegisterUserScreen from './screens/RegisterUserScreen';
+import VerifyUserScreen from './screens/VerifyUserScreen';
+import LinkEmailVerifyScreen from './screens/LinkEmailVerifyScreen';
 
 import { Container } from 'react-bootstrap';
 import PrivateRoute from './routing/PrivateRoute';
@@ -36,6 +38,12 @@ const App = () => {
           />
           <Route path="/login" component={LoginScreen} />
           <Route path="/register" component={RegisterUserScreen} />
+          <Route
+            path="/verify/:id/:code"
+            component={LinkEmailVerifyScreen}
+            exact
+          />
+          <Route path="/verify" component={VerifyUserScreen} exact />
           {/* <Route path="/page/:pageNumber" component={HomeScreen} exact /> */}
           {/* <Route path="/search/:keyword" component={HomeScreen} exact /> */}
           <PrivateRoute exact path="/" component={HomeScreen} />
