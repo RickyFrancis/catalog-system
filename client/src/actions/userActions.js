@@ -8,6 +8,9 @@ import {
   USER_DETAILS_REQUEST,
   USER_DETAILS_RESET,
   USER_DETAILS_SUCCESS,
+  USER_EMAIL_VERIFY_FAIL,
+  USER_EMAIL_VERIFY_REQUEST,
+  USER_EMAIL_VERIFY_SUCCESS,
   USER_LIST_FAIL,
   USER_LIST_REQUEST,
   USER_LIST_RESET,
@@ -68,10 +71,51 @@ export const logout = () => (dispatch) => {
   dispatch({ type: USER_LIST_RESET });
 };
 
-export const register = (name, email, password) => async (dispatch) => {
+export const register =
+  (name, email, password, nextStep) => async (dispatch) => {
+    try {
+      dispatch({
+        type: USER_REGISTER_REQUEST,
+      });
+
+      const config = {
+        headers: {
+          'Content-Type': 'Application/json',
+        },
+      };
+
+      const { data } = await axios.post(
+        '/api/users/',
+        { name, email, password },
+        config
+      );
+      dispatch({
+        type: USER_REGISTER_SUCCESS,
+        payload: data,
+      });
+      dispatch(nextStep);
+      // dispatch({
+      //   type: USER_LOGIN_SUCCESS,
+      //   payload: data,
+      // });
+
+      // localStorage.setItem('userInfo', JSON.stringify(data));
+    } catch (error) {
+      console.log(error.response);
+      dispatch({
+        type: USER_REGISTER_FAIL,
+        payload:
+          error.response && error.response.data
+            ? error.response.data
+            : error.message,
+      });
+    }
+  };
+
+export const verifyUserEmail = (id, verificationCode) => async (dispatch) => {
   try {
     dispatch({
-      type: USER_REGISTER_REQUEST,
+      type: USER_EMAIL_VERIFY_REQUEST,
     });
 
     const config = {
@@ -81,12 +125,11 @@ export const register = (name, email, password) => async (dispatch) => {
     };
 
     const { data } = await axios.post(
-      '/api/users/',
-      { name, email, password },
+      `/api/users/verify/${id}/${verificationCode}`,
       config
     );
     dispatch({
-      type: USER_REGISTER_SUCCESS,
+      type: USER_EMAIL_VERIFY_SUCCESS,
       payload: data,
     });
     dispatch({
@@ -96,11 +139,12 @@ export const register = (name, email, password) => async (dispatch) => {
 
     localStorage.setItem('userInfo', JSON.stringify(data));
   } catch (error) {
+    console.log(error.response);
     dispatch({
-      type: USER_REGISTER_FAIL,
+      type: USER_EMAIL_VERIFY_FAIL,
       payload:
-        error.response && error.response.data.message
-          ? error.response.data.message
+        error.response && error.response.data
+          ? error.response.data
           : error.message,
     });
   }

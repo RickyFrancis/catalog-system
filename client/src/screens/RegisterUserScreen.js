@@ -5,20 +5,31 @@ import { useDispatch, useSelector } from 'react-redux';
 import Message from '../components/Message';
 import Loader from '../components/Loader';
 import FormContainer from '../components/FormContainer';
-import { register } from '../actions/userActions';
+import RegisterUserForm from '../components/RegisterUserForm';
+import VerifyUserEmailForm from '../components/VerifyUserEmailForm';
+import { register, verifyUserEmail } from '../actions/userActions';
 
 const RegisterScreen = ({ location, history }) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [verificationCode, setVerificationCode] = useState(null);
   const [showPass, setShowPass] = useState(false);
   const [message, setMessage] = useState(null);
+  const [step, setStep] = useState(1);
 
   const dispatch = useDispatch();
 
   const userRegister = useSelector((state) => state.userRegister);
   const { loading, error, userInfo } = userRegister;
+
+  const userVerifyEmail = useSelector((state) => state.userVerifyEmail);
+  const {
+    loading: loadingVerify,
+    error: errorVerify,
+    userInfo: userInfoVerify,
+  } = userVerifyEmail;
 
   const userLogin = useSelector((state) => state.userLogin);
   const {
@@ -27,13 +38,13 @@ const RegisterScreen = ({ location, history }) => {
     userInfo: userInfoLogin,
   } = userLogin;
 
-  const redirect = location.search ? location.search.split('=')[1] : '/verify';
+  // const redirect = location.search ? location.search.split('=')[1] : '/verify';
 
   useEffect(() => {
-    if (userInfo || userInfoLogin) {
-      history.push(redirect);
+    if (userInfoLogin) {
+      history.push('/');
     }
-  }, [history, userInfo, userInfoLogin, redirect]);
+  }, [history, userInfo, userInfoLogin]);
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -44,75 +55,59 @@ const RegisterScreen = ({ location, history }) => {
         setMessage('');
       }, 3000);
     } else {
-      dispatch(register(name, email, password));
+      dispatch(register(name, email, password, nextStep));
     }
   };
 
+  const verificationCodeSubmitHandler = (e) => {
+    e.preventDefault();
+    dispatch(verifyUserEmail(userInfo.user._id, verificationCode));
+  };
+
+  // Proceed to the next step
+  const nextStep = () => {
+    setStep(step + 1);
+  };
+
+  // Go back to previous step
+  const prevStep = (e) => {
+    e.preventDefault();
+    setStep(step - 1);
+  };
+
   return (
-    <FormContainer className="mt-5">
-      <h1 className="mb-3">Register</h1>
+    <>
       {message && <Message variant="danger">{message}</Message>}
       {error && <Message variant="danger">{error}</Message>}
+      {errorVerify && <Message variant="danger">{errorVerify}</Message>}
       {loading && <Loader />}
-      <Form onSubmit={submitHandler}>
-        <Form.Group controlId="name" className="mb-3">
-          <Form.Label>Name</Form.Label>
-          <Form.Control
-            type="text"
-            placeholder="Enter your full name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            required
-          ></Form.Control>
-        </Form.Group>
-        <Form.Group controlId="email" className="mb-3">
-          <Form.Label>Email Address</Form.Label>
-          <Form.Control
-            type="email"
-            placeholder="Enter your email address"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          ></Form.Control>
-        </Form.Group>
+      {loadingVerify && <Loader />}
 
-        <Form.Group controlId="password" className="mb-3">
-          <Form.Label>Password</Form.Label>
-          <Form.Control
-            type={showPass ? 'text' : 'password'}
-            placeholder="Enter your desired password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          ></Form.Control>
-        </Form.Group>
-        <Form.Group controlId="confirmPassword" className="mb-3">
-          <Form.Label>Confirm Password</Form.Label>
-          <Form.Control
-            type={showPass ? 'text' : 'password'}
-            placeholder="Re-enter password"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-          ></Form.Control>
-        </Form.Group>
-        <Form.Group className="mb-3" controlId="showPassword">
-          <Form.Check
-            type="checkbox"
-            label="Show password"
-            onClick={() => setShowPass(!showPass)}
-          />
-        </Form.Group>
-        <Button type="submit" variant="primary">
-          Register
-        </Button>
-      </Form>
-      <Row className="py-3">
-        <Col>
-          Have an account? &nbsp;
-          <Link to={redirect ? `/login?redirect=${redirect}` : '/login'}>
-            Login
-          </Link>
-        </Col>
-      </Row>
-    </FormContainer>
+      {step === 1 && (
+        <RegisterUserForm
+          name={name}
+          email={email}
+          password={password}
+          confirmPassword={confirmPassword}
+          showPass={showPass}
+          setName={setName}
+          setEmail={setEmail}
+          setPassword={setPassword}
+          setConfirmPassword={setConfirmPassword}
+          setShowPass={setShowPass}
+          submitHandler={submitHandler}
+        />
+      )}
+      {step === 2 && (
+        <VerifyUserEmailForm
+          email={email}
+          verificationCode={verificationCode}
+          setVerificationCode={setVerificationCode}
+          verificationCodeSubmitHandler={verificationCodeSubmitHandler}
+          prevStep={prevStep}
+        />
+      )}
+    </>
   );
 };
 
