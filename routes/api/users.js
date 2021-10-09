@@ -3,6 +3,7 @@ const authAdmin = require('../../middlewares/authAdmin');
 const { User, validateUser } = require('../../models/User');
 const _ = require('lodash');
 const bcrypt = require('bcryptjs');
+const mongoDB = require('mongodb');
 const mailHandler = require('../../controller/mailHandler');
 const config = require('config');
 
@@ -23,7 +24,9 @@ router.get('/me', auth, async (req, res) => {
 router.get('/', auth, authAdmin, async (req, res) => {
   try {
     const users = await User.find({}).select('-password');
+
     if (_.isEmpty(users)) return res.status(400).send('No User found');
+
     res.status(200).send(users);
   } catch (error) {
     console.log(error);
@@ -39,7 +42,9 @@ router.post('/', async (req, res) => {
 
 
     let user = await User.findOne({ email: req.body.email });
+
     if (user) return res.status(400).send("User Already Exists");
+
     const salt = await bcrypt.genSalt(12);
     const password = await bcrypt.hash(req.body.password, salt);
 
@@ -49,27 +54,35 @@ router.post('/', async (req, res) => {
       password: password,
       isAdmin: req.body.isAdmin
     });
-    user = await user.save();
-    let url = `${config.get('url')}?id=${user._id}&code=${user.verificationCode}`
-    let isSuccessful = mailHandler(user.email, user.name, user.verificationCode, url);
+    let isSuccessful = mailHandler(user.email, user.name, user.verificationCode, user._id);
     if (!isSuccessful) throw new Error('Something went wrong');
     else if (isSuccessful) {
-      res.status(200).send(_.pick(user, ['_id', 'name', 'email']));
+      user = await user.save();
+      res.status(200).send({ user: _.pick(user, ['_id', 'name', 'email']) });
     }
   } catch (error) {
-    console.error(error);
+    console.error('[USER REGISTRATION]', error);
     res.status(400).send(error.message);
   }
 });
 
-router.post('/verify', async (req, res) => {
+router.post('/verify/:id/:verificationCode', async (req, res) => {
   try {
-    let { id, code } = req.query;
+    let { id, verificationCode } = req.params;
+    const isValidObjectId = mongoDB.ObjectId.isValid(id);
+
+    if (!isValidObjectId) {
+      return res.status(400).send('ObjectID is not valid');
+    }
+
     let user = await User.findById(id);
+
     if (!user) return res.status(400).send('User not found');
-    if (Number(code) !== user.verificationCode || !user.verificationCode) {
+
+    if (Number(verificationCode) !== user.verificationCode || !user.verificationCode) {
       return res.status(200).send('Verification Failed');
     }
+
     user.isVerified = true;
     user.verificationCode = null;
     await user.save();
@@ -77,6 +90,26 @@ router.post('/verify', async (req, res) => {
     res.status(200).send({ token, user: _.pick(user, ['_id', 'name', 'email']) });
   } catch (error) {
     console.log(error);
+    res.status(400).send(error.message);
+  }
+});
+
+router.post('/resend-code/:id', async (req, res) => {
+  const id = req.params.id;
+  try {
+    let user = await User.findById(id);
+    if (user.isVerified || user.verificationCode === null) {
+      console.log('[RESEND CODE][VERIFICATION] Resend Attempt Failed.')
+      return res.status(400).send('Resend Attempt Failed.');
+    }
+    user.verificationCode = user.generateVerificationCode();
+    let isSuccessful = mailHandler(user.email, user.name, user.verificationCode, user._id);
+    if (isSuccessful) {
+      user = await user.save();
+      res.status(200).send('Mail sent');
+    }
+  } catch (error) {
+    console.log('[RESEND CODE]', error);
     res.status(400).send(error.message);
   }
 })
