@@ -44,9 +44,10 @@ x-auth-token: {{adminToken}}
 
 ###
 
-POST {{url}}/api/users/verify?id=615ec534f81f4f6d53202449&code=385844
+POST {{url}}/api/users/verify/61612ce3ab8fcdcb8051b97a/152528
 Content-Type: {{contentType}}
 
+###
 
-
-
+POST {{url}}/api/users/resend-code/6161577767248be5cfd30fe3
+Content-Type: {{contentType}}
