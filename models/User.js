@@ -3,12 +3,15 @@ const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
 const config = require('config');
 
+function generateCode() {
+  return parseInt(Math.floor(Math.random() * 900000) + 100000);
+}
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
     minlength: 3,
-    maxlength: 20
+    maxlength: 50
   },
   email: {
     type: String,
@@ -32,9 +35,15 @@ const userSchema = new mongoose.Schema({
   },
   verificationCode: {
     type: Number,
-    default: function () {
-      return parseInt(Math.floor(Math.random() * 900000) + 100000)
-    }
+    default: generateCode()
+  },
+  issuedAt: {
+    type: Date,
+    default: Date.now
+  },
+  forgotPassword: {
+    type: Boolean,
+    default: false
   }
 });
 userSchema.methods.generateAuthToken = function () {
@@ -42,13 +51,15 @@ userSchema.methods.generateAuthToken = function () {
   return token;
 }
 
+userSchema.methods.generateVerificationCode = generateCode;
+
 const User = mongoose.model('User', userSchema);
 
 
 
 const validateUser = function (user) {
   const schema = Joi.object({
-    name: Joi.string().required().min(3).max(20),
+    name: Joi.string().required().min(3).max(50),
     email: Joi.string().email().min(5).max(40).required(),
     password: Joi.string().required().min(6),
     isAdmin: Joi.boolean()
