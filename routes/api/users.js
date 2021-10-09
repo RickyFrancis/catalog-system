@@ -80,7 +80,7 @@ router.post('/verify/:id/:verificationCode', async (req, res) => {
     if (!user) return res.status(400).send('User not found');
 
     if (Number(verificationCode) !== user.verificationCode || !user.verificationCode) {
-      return res.status(200).send('Verification Failed');
+      return res.status(400).send('Verification Failed');
     }
 
     user.isVerified = true;
