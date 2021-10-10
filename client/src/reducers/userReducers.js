@@ -17,6 +17,18 @@ import {
   USER_LOGIN_REQUEST,
   USER_LOGIN_SUCCESS,
   USER_LOGOUT,
+  USER_PASSWORD_RESET_FAIL,
+  USER_PASSWORD_RESET_REQUEST,
+  USER_PASSWORD_RESET_RESET,
+  USER_PASSWORD_RESET_SUCCESS,
+  USER_PASSWORD_RESET_VERIFY_CODE_FAIL,
+  USER_PASSWORD_RESET_VERIFY_CODE_REQUEST,
+  USER_PASSWORD_RESET_VERIFY_CODE_RESET,
+  USER_PASSWORD_RESET_VERIFY_CODE_SUCCESS,
+  USER_PASSWORD_RESET_VERIFY_EMAIL_FAIL,
+  USER_PASSWORD_RESET_VERIFY_EMAIL_REQUEST,
+  USER_PASSWORD_RESET_VERIFY_EMAIL_RESET,
+  USER_PASSWORD_RESET_VERIFY_EMAIL_SUCCESS,
   USER_REGISTER_FAIL,
   USER_REGISTER_REQUEST,
   USER_REGISTER_RESET,
@@ -69,6 +81,51 @@ export const userVerifyEmailReducer = (state = {}, action) => {
       return { loading: false, userInfo: action.payload };
     case USER_EMAIL_VERIFY_FAIL:
       return { loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
+
+export const userPasswordResetVerifyEmailReducer = (state = {}, action) => {
+  switch (action.type) {
+    case USER_PASSWORD_RESET_VERIFY_EMAIL_REQUEST:
+      return { loading: true };
+    case USER_PASSWORD_RESET_VERIFY_EMAIL_SUCCESS:
+      return { loading: false, userInfo: action.payload };
+    case USER_PASSWORD_RESET_VERIFY_EMAIL_FAIL:
+      return { loading: false, error: action.payload };
+    case USER_PASSWORD_RESET_VERIFY_EMAIL_RESET:
+      return {};
+    default:
+      return state;
+  }
+};
+
+export const userPasswordResetVerifyCodeReducer = (state = {}, action) => {
+  switch (action.type) {
+    case USER_PASSWORD_RESET_VERIFY_CODE_REQUEST:
+      return { loading: true };
+    case USER_PASSWORD_RESET_VERIFY_CODE_SUCCESS:
+      return { loading: false, userInfo: action.payload };
+    case USER_PASSWORD_RESET_VERIFY_CODE_FAIL:
+      return { loading: false, error: action.payload };
+    case USER_PASSWORD_RESET_VERIFY_CODE_RESET:
+      return {};
+    default:
+      return state;
+  }
+};
+
+export const userPasswordResetReducer = (state = {}, action) => {
+  switch (action.type) {
+    case USER_PASSWORD_RESET_REQUEST:
+      return { loading: true };
+    case USER_PASSWORD_RESET_SUCCESS:
+      return { loading: false, userInfo: action.payload };
+    case USER_PASSWORD_RESET_FAIL:
+      return { loading: false, error: action.payload };
+    case USER_PASSWORD_RESET_RESET:
+      return {};
     default:
       return state;
   }

@@ -14,11 +14,9 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import {
   userLoginReducer,
   userRegisterReducer,
-  userDetailsReducer,
-  userUpdateProfileReducer,
-  userListReducer,
-  userDeleteReducer,
-  userUpdateReducer,
+  userPasswordResetVerifyEmailReducer,
+  userPasswordResetVerifyCodeReducer,
+  userPasswordResetReducer,
   userVerifyEmailReducer,
 } from './reducers/userReducers';
 
@@ -41,6 +39,9 @@ const reducer = combineReducers({
   userLogin: userLoginReducer,
   userRegister: userRegisterReducer,
   userVerifyEmail: userVerifyEmailReducer,
+  userPasswordResetVerifyEmail: userPasswordResetVerifyEmailReducer,
+  userPasswordResetVerifyCode: userPasswordResetVerifyCodeReducer,
+  userPasswordReset: userPasswordResetReducer,
   //   userDetails: userDetailsReducer,
   //   userUpdateProfile: userUpdateProfileReducer,
   //   userList: userListReducer,

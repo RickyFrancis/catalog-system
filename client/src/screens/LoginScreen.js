@@ -4,7 +4,6 @@ import { Form, Button, Row, InputGroup, Col, Card } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import Message from '../components/Message';
 import Loader from '../components/Loader';
-import FormContainer from '../components/FormContainer';
 import { login } from '../actions/userActions';
 
 const LoginScreen = ({ location, history }) => {
@@ -30,7 +29,6 @@ const LoginScreen = ({ location, history }) => {
   };
 
   return (
-    // <FormContainer>
     <Row className="mt-5">
       <Col md={{ span: 4, offset: 4 }}>
         <Card
@@ -85,7 +83,6 @@ const LoginScreen = ({ location, history }) => {
         </Card>
       </Col>
     </Row>
-    // {/* </FormContainer> */}
   );
 };
 

@@ -23,7 +23,7 @@ const LinkEmailVerifyScreen = ({ match, history }) => {
     if (userInfoVerify) {
       history.push('/');
     } else dispatch(verifyUserEmail(id, code));
-  }, [history, userInfoVerify]);
+  }, [history, userInfoVerify, id, code, dispatch]);
 
   return (
     <>

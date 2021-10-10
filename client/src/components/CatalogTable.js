@@ -1,22 +1,16 @@
 import React from 'react';
-import { Route } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, Table } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import { format } from 'date-fns';
 import { deleteCatalog } from '../actions/catalogActions';
-// import SearchBox from './SearchBox';
-// import { logout } from '../actions/userActions';
+import Message from './Message';
 
 const CatalogTable = ({ catalogs }) => {
   const dispatch = useDispatch();
 
-  //   const userLogin = useSelector((state) => state.userLogin);
-  //   const { userInfo } = userLogin;
-
-  const logoutHandler = () => {
-    // dispatch(logout());
-  };
+  const catalogDelete = useSelector((state) => state.catalogDelete);
+  const { loading: loadingDelete, error: errorDelete } = catalogDelete;
 
   const deleteHandler = (id) => {
     if (window.confirm('Are you sure?')) {
@@ -26,6 +20,7 @@ const CatalogTable = ({ catalogs }) => {
 
   return (
     <>
+      {errorDelete && <Message variant="danger">{errorDelete}</Message>}
       <Table striped bordered hover responsive className="table-sm">
         <thead>
           <tr>
@@ -45,7 +40,6 @@ const CatalogTable = ({ catalogs }) => {
                 <td>{catalog.title}</td>
                 <td>{catalog.author}</td>
                 <td>{format(new Date(catalog.date), 'PP')}</td>
-                {/* ${catalog.comments.substring(0, 80)} */}
                 <td>
                   {catalog.comments.length > 79 ? (
                     `${catalog.comments.substring(0, 80)}...`
@@ -74,7 +68,11 @@ const CatalogTable = ({ catalogs }) => {
                     className="btn-sm"
                     onClick={() => deleteHandler(catalog._id)}
                   >
-                    <i className="fas fa-trash"></i>
+                    {loadingDelete ? (
+                      <i className="fas fa-circle-notch fa-spin"></i>
+                    ) : (
+                      <i className="fas fa-trash"></i>
+                    )}
                   </Button>
                 </td>
               </tr>
@@ -86,7 +84,6 @@ const CatalogTable = ({ catalogs }) => {
           )}
         </tbody>
       </Table>
-      {/* <Paginate pages={pages} page={page} isAdmin={true} /> */}
     </>
   );
 };

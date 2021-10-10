@@ -24,6 +24,9 @@ import {
   CATALOG_TOP_SUCCESS,
   CATALOG_TOP_REQUEST,
   CATALOG_LIST_REMOVE_ITEM,
+  CATALOG_LIST_RESET,
+  CATALOG_DETAILS_RESET,
+  CATALOG_DELETE_RESET,
 } from '../constants/catalogConstants';
 
 export const catalogListReducer = (state = { catalogs: [] }, action) => {
@@ -49,6 +52,8 @@ export const catalogListReducer = (state = { catalogs: [] }, action) => {
       };
     case CATALOG_LIST_FAIL:
       return { loading: false, error: action.payload };
+    case CATALOG_LIST_RESET:
+      return { catalogs: [] };
     default:
       return state;
   }
@@ -68,6 +73,8 @@ export const catalogDetailsReducer = (
       };
     case CATALOG_DETAILS_FAIL:
       return { loading: false, error: action.payload };
+    case CATALOG_DETAILS_RESET:
+      return { loading: false, catalog: {} };
     default:
       return state;
   }
@@ -81,6 +88,8 @@ export const catalogDeleteReducer = (state = {}, action) => {
       return { loading: false, success: true };
     case CATALOG_DELETE_FAIL:
       return { loading: false, error: action.payload };
+    case CATALOG_DELETE_RESET:
+      return {};
     default:
       return state;
   }

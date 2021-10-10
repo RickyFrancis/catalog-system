@@ -1,9 +1,7 @@
 import React from 'react';
-import { Route } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Navbar, Nav, Container, NavDropdown, Button } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
-import SearchBox from './SearchBox';
 import { logout } from '../actions/userActions';
 
 const Header = () => {

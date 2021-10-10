@@ -1,14 +1,7 @@
-// import React, { useState, useEffect } from 'react';
-// import axios from 'axios';
-
-import React, { useEffect, useState, useRef } from 'react';
-import { Link } from 'react-router-dom';
-// import Product from '../components/Product';
-import { Row, Col, Button, Form } from 'react-bootstrap';
-import { LinkContainer } from 'react-router-bootstrap';
+import React, { useEffect, useState } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { deleteCatalog, listCatalogs } from '../actions/catalogActions';
+import { listCatalogs } from '../actions/catalogActions';
 
 import Paginate from '../components/Paginate';
 
@@ -17,8 +10,11 @@ import Loader from '../components/Loader';
 import Message from '../components/Message';
 import SearchForm from '../components/SearchForm';
 
-import Flatpickr from 'react-flatpickr';
-import { CATALOG_UPDATE_RESET } from '../constants/catalogConstants';
+import {
+  CATALOG_CREATE_RESET,
+  CATALOG_DELETE_RESET,
+  CATALOG_UPDATE_RESET,
+} from '../constants/catalogConstants';
 
 const HomeScreen = ({ history }) => {
   const [entryNumber, setEntryNumber] = useState('');
@@ -40,15 +36,13 @@ const HomeScreen = ({ history }) => {
   const { loading, error, catalogs, page, pages, total } = catalogList;
 
   const catalogDelete = useSelector((state) => state.catalogDelete);
-  const {
-    loading: loadingDelete,
-    error: errorDelete,
-    success: successDelete,
-  } = catalogDelete;
+  const { success: successDelete } = catalogDelete;
 
   useEffect(() => {
     if (userInfo) {
       dispatch({ type: CATALOG_UPDATE_RESET });
+      dispatch({ type: CATALOG_CREATE_RESET });
+      dispatch({ type: CATALOG_DELETE_RESET });
       dispatch(
         listCatalogs(
           pageNumber,
@@ -96,13 +90,6 @@ const HomeScreen = ({ history }) => {
       )
     );
   };
-
-  const changePage = (e, pageNumber) => {
-    e.preventDefault();
-    setPageNumber(pageNumber);
-  };
-
-  const fp = useRef(null);
 
   return (
     <>

@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { Form, Button, Row, Col } from 'react-bootstrap';
+
 import { useDispatch, useSelector } from 'react-redux';
 import Message from '../components/Message';
 import Loader from '../components/Loader';
-import FormContainer from '../components/FormContainer';
+
 import RegisterUserForm from '../components/RegisterUserForm';
 import VerifyUserEmailForm from '../components/VerifyUserEmailForm';
 import { register, verifyUserEmail } from '../actions/userActions';
@@ -25,18 +24,10 @@ const RegisterScreen = ({ location, history }) => {
   const { loading, error, userInfo } = userRegister;
 
   const userVerifyEmail = useSelector((state) => state.userVerifyEmail);
-  const {
-    loading: loadingVerify,
-    error: errorVerify,
-    userInfo: userInfoVerify,
-  } = userVerifyEmail;
+  const { loading: loadingVerify, error: errorVerify } = userVerifyEmail;
 
   const userLogin = useSelector((state) => state.userLogin);
-  const {
-    loading: loadingLogin,
-    error: errorLogin,
-    userInfo: userInfoLogin,
-  } = userLogin;
+  const { userInfo: userInfoLogin } = userLogin;
 
   // const redirect = location.search ? location.search.split('=')[1] : '/verify';
 

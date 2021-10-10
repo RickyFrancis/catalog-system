@@ -1,20 +1,21 @@
 import React, { useState, useRef, useEffect } from 'react';
 
-import { Form, Button, InputGroup } from 'react-bootstrap';
+import { Form, Button, OverlayTrigger, Popover } from 'react-bootstrap';
 
 import 'flatpickr/dist/themes/airbnb.css';
 import Flatpickr from 'react-flatpickr';
 import { LinkContainer } from 'react-router-bootstrap';
 
-import { listCatalogDetails, updateCatalog } from '../actions/catalogActions';
+import {
+  deleteCatalog,
+  listCatalogDetails,
+  updateCatalog,
+} from '../actions/catalogActions';
 import { useDispatch, useSelector } from 'react-redux';
 import Message from '../components/Message';
 import Loader from '../components/Loader';
-import { CATALOG_UPDATE_RESET } from '../constants/catalogConstants';
 
 const EditCatalogScreen = ({ match, history }) => {
-  const catalogId = match.params.id;
-
   const dispatch = useDispatch();
 
   const catalogDetails = useSelector((state) => state.catalogDetails);
@@ -24,9 +25,15 @@ const EditCatalogScreen = ({ match, history }) => {
   const {
     loading: loadingUpdate,
     error: errorUpdate,
-    catalog: updatedCatalog,
     success: successUpdate,
   } = catalogUpdate;
+
+  const catalogDelete = useSelector((state) => state.catalogDelete);
+  const {
+    loading: loadingDelete,
+    error: errorDelete,
+    success: successDelete,
+  } = catalogDelete;
 
   const [entryNumber, setEntryNumber] = useState('');
   const [title, setTitle] = useState('');
@@ -35,10 +42,10 @@ const EditCatalogScreen = ({ match, history }) => {
   const [comments, setComments] = useState('');
 
   useEffect(() => {
-    if (successUpdate) {
+    if (successUpdate || successDelete) {
       setTimeout(() => {
         history.push(`/`);
-      }, 2000);
+      }, 1500);
     } else {
       if (!catalog || !catalog.title || catalog._id !== match.params.id) {
         dispatch(listCatalogDetails(match.params.id));
@@ -50,7 +57,7 @@ const EditCatalogScreen = ({ match, history }) => {
         setComments(catalog.comments);
       }
     }
-  }, [dispatch, catalog, match, successUpdate, history]);
+  }, [dispatch, catalog, match, successUpdate, history, successDelete]);
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -59,9 +66,11 @@ const EditCatalogScreen = ({ match, history }) => {
     );
   };
 
-  // useEffect(() => {
-  //   dispatch({ type: CATALOG_UPDATE_RESET });
-  // }, []);
+  const deleteHandler = (id) => {
+    if (window.confirm('Are you sure?')) {
+      dispatch(deleteCatalog(id));
+    }
+  };
 
   const fp = useRef(null);
 
@@ -69,13 +78,30 @@ const EditCatalogScreen = ({ match, history }) => {
     <>
       <Form onSubmit={submitHandler} className="mb-3">
         <Form.Group controlId="entryNumber" className="mb-3">
-          <Form.Label>Number</Form.Label>
-          <Form.Control
-            type="text"
-            placeholder="Enter entry number"
-            value={entryNumber}
-            onChange={(e) => setEntryNumber(e.target.value)}
-          ></Form.Control>
+          <Form.Label>Number</Form.Label>{' '}
+          <OverlayTrigger
+            placement="bottom"
+            size="sm"
+            overlay={
+              <Popover id="popover-contained">
+                <Popover.Header as="h3">
+                  Entry number can't be changed
+                </Popover.Header>
+                <Popover.Body>
+                  Made a mistake in entry number? Please delete this catalog and
+                  create a new one.
+                </Popover.Body>
+              </Popover>
+            }
+          >
+            <Form.Control
+              type="text"
+              placeholder="Enter entry number"
+              value={entryNumber}
+              onChange={(e) => setEntryNumber(e.target.value)}
+              readOnly
+            ></Form.Control>
+          </OverlayTrigger>
         </Form.Group>
         <Form.Group controlId="title" className="mb-3">
           <Form.Label>Title</Form.Label>
@@ -131,6 +157,13 @@ const EditCatalogScreen = ({ match, history }) => {
           ></Form.Control>
         </Form.Group>
 
+        <Button
+          variant="danger"
+          onClick={() => deleteHandler(catalog._id)}
+          style={{ marginRight: '10px' }}
+        >
+          <i className="fas fa-trash"></i>
+        </Button>
         <LinkContainer to={`/`} style={{ marginRight: '10px' }}>
           <Button variant="secondary">Back</Button>
         </LinkContainer>
@@ -139,9 +172,13 @@ const EditCatalogScreen = ({ match, history }) => {
         </Button>
       </Form>
       {successUpdate && <Message>Entry updated</Message>}
+      {successDelete && <Message>Entry deleted</Message>}
       {errorUpdate && <Message variant="danger">{errorUpdate}</Message>}
       {error && <Message variant="danger">{error}</Message>}
+      {errorDelete && <Message variant="danger">{errorDelete}</Message>}
+      {loading && <Loader />}
       {loadingUpdate && <Loader />}
+      {loadingDelete && <Loader />}
     </>
   );
 };

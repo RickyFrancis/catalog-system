@@ -1,8 +1,7 @@
 import React from 'react';
-
 import { Form, Button, Row, Col, Card } from 'react-bootstrap';
 
-const VerifyUserEmailForm = ({
+const ResetPasswordVerificationCodeForm = ({
   email,
   verificationCode,
   setVerificationCode,
@@ -44,18 +43,10 @@ const VerifyUserEmailForm = ({
               Change Email
             </Button>
           </Form>
-          {/* <Row className="py-3">
-            <span>
-              A verification code was sent to your email <mark>{email}</mark>
-            </span>
-            <Button variant="link" onClick={(e) => prevStep(e)} size="sm">
-              Change Email
-            </Button>
-          </Row> */}
         </Card>
       </Col>
     </Row>
   );
 };
 
-export default VerifyUserEmailForm;
+export default ResetPasswordVerificationCodeForm;

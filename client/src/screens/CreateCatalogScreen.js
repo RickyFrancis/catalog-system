@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 
-import { Form, Button, InputGroup } from 'react-bootstrap';
+import { Form, Button } from 'react-bootstrap';
 
 import 'flatpickr/dist/themes/airbnb.css';
 import Flatpickr from 'react-flatpickr';
@@ -9,7 +9,6 @@ import { createCatalog } from '../actions/catalogActions';
 import { useDispatch, useSelector } from 'react-redux';
 import Message from '../components/Message';
 import Loader from '../components/Loader';
-import { CATALOG_CREATE_RESET } from '../constants/catalogConstants';
 
 const CreateCatalogScreen = ({ history }) => {
   const dispatch = useDispatch();
@@ -21,7 +20,7 @@ const CreateCatalogScreen = ({ history }) => {
   const [comments, setComments] = useState('');
 
   const catalogCreate = useSelector((state) => state.catalogCreate);
-  const { loading, error, catalog, success } = catalogCreate;
+  const { loading, error, success } = catalogCreate;
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -29,16 +28,12 @@ const CreateCatalogScreen = ({ history }) => {
   };
 
   useEffect(() => {
-    dispatch({ type: CATALOG_CREATE_RESET });
-  }, []);
-
-  useEffect(() => {
     if (success) {
       setTimeout(() => {
         history.push(`/`);
-      }, 2000);
+      }, 1500);
     }
-  }, [success]);
+  }, [success, history]);
 
   const fp = useRef(null);
 
@@ -48,7 +43,7 @@ const CreateCatalogScreen = ({ history }) => {
         <Form.Group controlId="entryNumber" className="mb-3">
           <Form.Label>Number</Form.Label>
           <Form.Control
-            type="text"
+            type="number"
             placeholder="Enter entry number"
             value={entryNumber}
             onChange={(e) => setEntryNumber(e.target.value)}

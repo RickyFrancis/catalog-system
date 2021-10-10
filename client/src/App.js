@@ -12,11 +12,11 @@ import CreateCatalogScreen from './screens/CreateCatalogScreen';
 import EditCatalogScreen from './screens/EditCatalogScreen';
 import ViewCatalogScreen from './screens/ViewCatalogScreen';
 import RegisterUserScreen from './screens/RegisterUserScreen';
-import VerifyUserScreen from './screens/VerifyUserScreen';
 import LinkEmailVerifyScreen from './screens/LinkEmailVerifyScreen';
 
 import { Container } from 'react-bootstrap';
 import PrivateRoute from './routing/PrivateRoute';
+import ResetPasswordScreen from './screens/ResetPasswordScreen';
 
 const App = () => {
   return (
@@ -24,6 +24,8 @@ const App = () => {
       <Header />
       <main className="py-3">
         <Container>
+          <PrivateRoute exact path="/" component={HomeScreen} />
+
           <PrivateRoute
             path="/create-catalog"
             component={CreateCatalogScreen}
@@ -43,11 +45,9 @@ const App = () => {
             component={LinkEmailVerifyScreen}
             exact
           />
-          <Route path="/verify" component={VerifyUserScreen} exact />
-          {/* <Route path="/page/:pageNumber" component={HomeScreen} exact /> */}
-          {/* <Route path="/search/:keyword" component={HomeScreen} exact /> */}
-          <PrivateRoute exact path="/" component={HomeScreen} />
-          {/* <Route path="/" component={HomeScreen} exact /> */}
+          <Route path="/reset" component={ResetPasswordScreen} exact />
+          <Route path="/page/:pageNumber" component={HomeScreen} exact />
+          <Route path="/search/:keyword" component={HomeScreen} exact />
         </Container>
       </main>
 
