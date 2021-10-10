@@ -15,7 +15,7 @@ router.get('/', auth, async (req, res) => {
     : (sortParams.order = -1);
   req.query.sortBy
     ? (sortParams.sortBy = req.query.sortBy)
-    : (sortParams.sortBy = 'date');
+    : (sortParams.sortBy = 'updateTime');
 
   const sortObject = [sortParams.sortBy.toString(), sortParams.order];
   req.query.entryNumber
@@ -45,6 +45,7 @@ router.get('/', auth, async (req, res) => {
       $options: 'i',
     })
     : {};
+  searchParameter.createdBy = req.user.id;
 
   try {
     const count = await Entry.countDocuments({ ...searchParameter });
@@ -87,16 +88,18 @@ router.get('/:id', auth, async (req, res) => {
 router.post('/', auth, async (req, res) => {
   reqDebugger(req.body);
   req.body.date = new Date(req.body.date);
+  const id = req.user.id;
   try {
 
     const result = validateEntry(req.body);
     if (result.error)
       return res.status(400).send(result.error.details[0].message);
 
-    let entry = await Entry.findOne({ entryNumber: req.body.entryNumber });
+    let entry = await Entry.findOne({ entryNumber: req.body.entryNumber, createdBy: id });
     if (entry) return res.status(400).send('Entry Number Already Exists');
 
     entry = new Entry(req.body);
+    entry.createdBy = id;
     entry = await entry.save();
     res.status(200).send(entry);
   } catch (error) {
@@ -123,8 +126,8 @@ router.put('/:id', auth, async (req, res) => {
     let entries = await Entry.findById(req.params.id);
     if (!entries) return res.status(200).send('Not found!');
 
-    // let entryDoesExist = await Entry.find({ entryNumber: req.body.entryNumber });
-    // if (entryDoesExist) return res.status(200).send('Entry Number Already exists. Please provide an unique number');
+    //let entryDoesExist = await Entry.find({ entryNumber: req.body.entryNumber });
+    //if (entryDoesExist) return res.status(400).send('Entry Number Already exists. Please provide an unique number');
 
     entries = await Entry.findByIdAndUpdate(req.params.id, req.body, { new: true });
     res.status(200).send(entries);

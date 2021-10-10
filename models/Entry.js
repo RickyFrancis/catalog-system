@@ -4,8 +4,7 @@ const mongoose = require('mongoose');
 const entrySchema = new mongoose.Schema({
   entryNumber: {
     type: Number,
-    required: true,
-    unique: true
+    required: true
   },
   title: {
     type: String,
@@ -22,6 +21,18 @@ const entrySchema = new mongoose.Schema({
   },
   comments: {
     type: String,
+  },
+  createdBy: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'users'
+  },
+  dateOfCreation: {
+    type: Date,
+    default: Date.now
+  },
+  updateTime: {
+    type: Date,
+    default: Date.now
   }
 })
 
