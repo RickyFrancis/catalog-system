@@ -2,5 +2,5 @@
   "jwtPrivateKey": "itsAsecret",
   "mailAddress": "noreply@ndub.edu.bd",
   "mailHost": "172.217.194.108",
-  "url": "https://cat.ndub.edu.bd/verify"
+  "url": "https://cat.ndub.edu.bd/"
 }
