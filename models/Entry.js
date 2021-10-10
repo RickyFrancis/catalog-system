@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 
 const entrySchema = new mongoose.Schema({
   entryNumber: {
-    type: Number,
+    type: String,
     required: true
   },
   title: {

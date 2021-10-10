@@ -18,8 +18,12 @@ router.get('/', auth, async (req, res) => {
     : (sortParams.sortBy = 'updateTime');
 
   const sortObject = [sortParams.sortBy.toString(), sortParams.order];
+
   req.query.entryNumber
-    ? (searchParameter.entryNumber = parseInt(req.query.entryNumber))
+    ? (searchParameter.entryNumber = {
+      $regex: '^' + req.query.entryNumber,
+      $options: 'i',
+    })
     : {};
   req.query.author
     ? (searchParameter.author = {
@@ -54,7 +58,7 @@ router.get('/', auth, async (req, res) => {
       .limit(pageSize)
       .skip((pageNumber - 1) * pageSize);
     if (count < 1) {
-      return res.status(404).send('Not found');
+      return res.status(404).send('No entires found');
     }
     res.status(200).send({
       entries: entries,
@@ -77,7 +81,7 @@ router.get('/:id', auth, async (req, res) => {
   try {
     const entry = await Entry.findById(req.params.id);
     if (!entry) {
-      return res.status(404).send('Not found');
+      return res.status(404).send('No entries yet. Please add some.');
     }
     res.status(200).send(entry);
   } catch (error) {
