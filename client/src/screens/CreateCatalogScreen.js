@@ -31,7 +31,7 @@ const CreateCatalogScreen = ({ history }) => {
     if (success) {
       setTimeout(() => {
         history.push(`/`);
-      }, 1500);
+      }, 1000);
     }
   }, [success, history]);
 

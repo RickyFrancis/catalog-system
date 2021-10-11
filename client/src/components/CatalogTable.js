@@ -33,7 +33,7 @@ const CatalogTable = ({ catalogs }) => {
           </tr>
         </thead>
         <tbody>
-          {catalogs.length > 0 ? (
+          {catalogs?.length > 0 ? (
             catalogs.map((catalog) => (
               <tr key={catalog._id}>
                 <td>{catalog.entryNumber}</td>

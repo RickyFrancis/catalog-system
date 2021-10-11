@@ -114,25 +114,19 @@ const HomeScreen = ({ history }) => {
       />
 
       {successDelete && <Message>Entry Deleted</Message>}
+      {loading && <Loader />}
+      {error && <Message>{error}</Message>}
 
-      {loading ? (
-        <Loader />
-      ) : error ? (
-        <Message variant="warning">{error}</Message>
-      ) : (
-        <>
-          <CatalogTable catalogs={catalogs} />
+      <CatalogTable catalogs={catalogs} />
 
-          <Paginate
-            pages={pages}
-            page={page}
-            setPageNumber={setPageNumber}
-            className="mb-3"
-          />
+      <Paginate
+        pages={pages}
+        page={page}
+        setPageNumber={setPageNumber}
+        className="mb-3"
+      />
 
-          <small>{`${total} results found`}</small>
-        </>
-      )}
+      {total && <small>{`${total} results found`}</small>}
     </>
   );
 };

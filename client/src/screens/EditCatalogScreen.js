@@ -45,7 +45,7 @@ const EditCatalogScreen = ({ match, history }) => {
     if (successUpdate || successDelete) {
       setTimeout(() => {
         history.push(`/`);
-      }, 1500);
+      }, 1000);
     } else {
       if (!catalog || !catalog.title || catalog._id !== match.params.id) {
         dispatch(listCatalogDetails(match.params.id));

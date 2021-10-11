@@ -34,7 +34,7 @@ const ViewCatalogScreen = ({ match, history }) => {
     if (successDelete) {
       setTimeout(() => {
         history.push(`/`);
-      }, 1500);
+      }, 1000);
     } else {
       if (
         !catalog ||
