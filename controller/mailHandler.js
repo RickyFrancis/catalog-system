@@ -2,8 +2,8 @@ const config = require('config')
 const nodemailer = require('nodemailer');
 const mailTemplate = require('../template/mailTemplate')
 
-module.exports = function (email, userName, code, userId, action) {
-  let url = `${config.get('url')}/${action}/${userId}/${code}`
+module.exports = function (email, userName, code, userId) {
+  let url = `${config.get('url')}/verify/${userId}/${code}`
   const transporter = nodemailer.createTransport({
     host: config.get('mailHost'),
     tls: { rejectUnauthorized: false },
