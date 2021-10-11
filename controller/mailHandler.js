@@ -1,8 +1,9 @@
 const config = require('config')
 const nodemailer = require('nodemailer');
-const mailTemplate = require('../template/mailTemplate')
+const mailTemplate = require('../template/mailTemplate');
+const resetTemplate = require('../template/resetTemplate');
 
-module.exports = function (email, userName, code, userId) {
+module.exports = function (email, userName, code, userId, action) {
   let url = `${config.get('url')}/verify/${userId}/${code}`
   const transporter = nodemailer.createTransport({
     host: config.get('mailHost'),
@@ -12,12 +13,14 @@ module.exports = function (email, userName, code, userId) {
       pass: config.get('mailPassword')
     }
   });
-
+  let mailHtml;
+  if (action == 'reset') mailHtml = resetTemplate;
+  else if (action == 'verify') mailHtml = mailTemplate;
   let mailOption = {
     from: config.get('mailAddress'),
     to: email,
     subject: 'Verify your email address',
-    html: mailTemplate(userName, code, url)
+    html: mailHtml(userName, code, url)
   }
   let isSuccessful = false;
   let information;

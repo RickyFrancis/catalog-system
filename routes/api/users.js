@@ -54,7 +54,7 @@ router.post('/', async (req, res) => {
       password: password,
       isAdmin: req.body.isAdmin
     });
-    let isSuccessful = mailHandler(user.email, user.name, user.verificationCode, user._id);
+    let isSuccessful = mailHandler(user.email, user.name, user.verificationCode, user._id, 'verify');
     if (!isSuccessful) throw new Error('Something went wrong');
     else if (isSuccessful) {
       user = await user.save();
@@ -135,7 +135,7 @@ router.post('/resend-code/:id', async (req, res) => {
       return res.status(400).send('You are already verified. Please log in to continue.');
     }
     user.verificationCode = user.generateVerificationCode();
-    let isSuccessful = mailHandler(user.email, user.name, user.verificationCode, user._id);
+    let isSuccessful = mailHandler(user.email, user.name, user.verificationCode, user._id, 'verify');
     if (isSuccessful) {
       user = await user.save();
       res.status(200).send('Mail sent');
@@ -154,7 +154,7 @@ router.post('/send-reset-code', async (req, res) => {
     if (user && !user.isVerified) return res.status(400).send('Your email is not verified yet. Please verify to continue');
     user.verificationCode = user.generateVerificationCode();
     user.forgotPassword = true;
-    let isSuccessful = mailHandler(user.email, user.name, user.verificationCode, user._id);
+    let isSuccessful = mailHandler(user.email, user.name, user.verificationCode, user._id, 'reset');
     if (isSuccessful) {
       await user.save();
       res.status(200).send({ user: { _id: user._id } });
