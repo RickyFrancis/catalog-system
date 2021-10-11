@@ -132,7 +132,7 @@ router.put('/:id', auth, async (req, res) => {
 
     //let entryDoesExist = await Entry.find({ entryNumber: req.body.entryNumber });
     //if (entryDoesExist) return res.status(400).send('Entry Number Already exists. Please provide an unique number');
-
+    req.body.updateTime = Date.now();
     entries = await Entry.findByIdAndUpdate(req.params.id, req.body, { new: true });
     res.status(200).send(entries);
   } catch (error) {
