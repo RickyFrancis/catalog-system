@@ -13,6 +13,7 @@ import EditCatalogScreen from './screens/EditCatalogScreen';
 import ViewCatalogScreen from './screens/ViewCatalogScreen';
 import RegisterUserScreen from './screens/RegisterUserScreen';
 import LinkEmailVerifyScreen from './screens/LinkEmailVerifyScreen';
+import ResetLinkEmailVerifyScreen from './screens/ResetLinkEmailVerifyScreen';
 
 import { Container } from 'react-bootstrap';
 import PrivateRoute from './routing/PrivateRoute';
@@ -43,6 +44,11 @@ const App = () => {
           <Route
             path="/verify/:id/:code"
             component={LinkEmailVerifyScreen}
+            exact
+          />
+          <Route
+            path="/reset-verify/:id/:code"
+            component={ResetLinkEmailVerifyScreen}
             exact
           />
           <Route path="/reset" component={ResetPasswordScreen} exact />

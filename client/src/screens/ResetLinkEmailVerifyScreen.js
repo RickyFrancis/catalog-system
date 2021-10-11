@@ -5,7 +5,7 @@ import Message from '../components/Message';
 import Loader from '../components/Loader';
 import { verifyUserEmail } from '../actions/userActions';
 
-const LinkEmailVerifyScreen = ({ match, history }) => {
+const ResetLinkEmailVerifyScreen = ({ match, history }) => {
   const dispatch = useDispatch();
 
   const id = match.params.id;
@@ -39,4 +39,4 @@ const LinkEmailVerifyScreen = ({ match, history }) => {
   );
 };
 
-export default LinkEmailVerifyScreen;
+export default ResetLinkEmailVerifyScreen;
