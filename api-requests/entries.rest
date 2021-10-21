@@ -22,7 +22,7 @@ x-auth-token: {{adminToken}}
 
 
 ###
-GET {{url}}/api/entries?pageNumber=1&pageSize=50&sortBy=entryNumber&entryNumber=8
+GET {{url}}/api/entries?source=dail
 x-auth-token: {{adminToken}}
 
 ###
@@ -36,6 +36,7 @@ x-auth-token: {{adminToken}}
   "title": "Hellow",
   "author": "Ricky Rozario",
   "date": "2021-10-04T03:04:02.737Z",
+  "source": "The Daily Star",
   "comments": ""
 }
 
