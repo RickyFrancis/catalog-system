@@ -10,6 +10,10 @@ const entrySchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  subtitle: {
+    type: String,
+    default: ''
+  },
   author: {
     type: String,
     required: true
@@ -18,6 +22,11 @@ const entrySchema = new mongoose.Schema({
     type: Date,
     required: true,
     default: Date.now
+  },
+  source: {
+    type: String,
+    required: true,
+    default: undefined
   },
   comments: {
     type: String,
@@ -42,8 +51,10 @@ const validateEntry = function (entry) {
   const schema = Joi.object({
     entryNumber: Joi.number().required(),
     title: Joi.string().required(),
+    subtitle: Joi.string().empty(''),
     author: Joi.string().required(),
     date: Joi.date(),
+    source: Joi.string().required(),
     comments: Joi.string().empty('')
   });
   return schema.validate(entry);
