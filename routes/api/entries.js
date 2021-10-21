@@ -37,12 +37,22 @@ router.get('/', auth, async (req, res) => {
       $options: 'i',
     })
     : {};
+  req.query.subtitle
+    ? (searchParameter.subtitle = {
+      $regex: req.query.subtitle,
+      $options: 'i',
+    })
+    : {};
   req.query.date
     ? (searchParameter.date = {
       $gte: new Date(req.query.date).setHours(00, 00, 00),
       $lt: new Date(req.query.date).setHours(11, 59, 59),
     })
     : {};
+  req.query.source ? (searchParameter.source = {
+    $regex: req.query.source,
+    $options: 'i'
+  }) : {};
   req.query.comments
     ? (searchParameter.comments = {
       $regex: req.query.comments,
