@@ -19,6 +19,8 @@ import {
 const HomeScreen = ({ history }) => {
   const [entryNumber, setEntryNumber] = useState('');
   const [title, setTitle] = useState('');
+  const [subtitle, setSubtitle] = useState('');
+  const [source, setSource] = useState('');
   const [author, setAuthor] = useState('');
   const [date, setDate] = useState('');
   const [comments, setComments] = useState('');
@@ -52,6 +54,8 @@ const HomeScreen = ({ history }) => {
           entryNumber,
           author,
           title,
+          subtitle,
+          source,
           comments,
           date
         )
@@ -66,6 +70,8 @@ const HomeScreen = ({ history }) => {
     entryNumber,
     author,
     title,
+    subtitle,
+    source,
     comments,
     date,
     sortBy,
@@ -97,6 +103,8 @@ const HomeScreen = ({ history }) => {
         submitHandler={submitHandler}
         entryNumber={entryNumber}
         title={title}
+        subtitle={subtitle}
+        source={source}
         author={author}
         date={date}
         comments={comments}
@@ -105,6 +113,8 @@ const HomeScreen = ({ history }) => {
         pageSize={pageSize}
         setEntryNumber={setEntryNumber}
         setTitle={setTitle}
+        setSubtitle={setSubtitle}
+        setSource={setSource}
         setAuthor={setAuthor}
         setDate={setDate}
         setComments={setComments}

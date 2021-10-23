@@ -15,6 +15,8 @@ const CreateCatalogScreen = ({ history }) => {
 
   const [entryNumber, setEntryNumber] = useState('');
   const [title, setTitle] = useState('');
+  const [subtitle, setSubtitle] = useState('');
+  const [source, setSource] = useState('');
   const [author, setAuthor] = useState('');
   const [date, setDate] = useState('');
   const [comments, setComments] = useState('');
@@ -24,7 +26,17 @@ const CreateCatalogScreen = ({ history }) => {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    dispatch(createCatalog(entryNumber, title, author, date, comments));
+    dispatch(
+      createCatalog(
+        entryNumber,
+        title,
+        subtitle,
+        source,
+        author,
+        date,
+        comments
+      )
+    );
   };
 
   useEffect(() => {
@@ -56,6 +68,24 @@ const CreateCatalogScreen = ({ history }) => {
             placeholder="Enter title"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
+          ></Form.Control>
+        </Form.Group>
+        <Form.Group controlId="subtitle" className="mb-3">
+          <Form.Label>Subtitle</Form.Label>
+          <Form.Control
+            type="text"
+            placeholder="Enter subtitle"
+            value={subtitle}
+            onChange={(e) => setSubtitle(e.target.value)}
+          ></Form.Control>
+        </Form.Group>
+        <Form.Group controlId="source" className="mb-3">
+          <Form.Label>Source</Form.Label>
+          <Form.Control
+            type="text"
+            placeholder="Enter source"
+            value={source}
+            onChange={(e) => setSource(e.target.value)}
           ></Form.Control>
         </Form.Group>
         <Form.Group controlId="author" className="mb-3">

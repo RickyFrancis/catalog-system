@@ -26,6 +26,8 @@ const CatalogTable = ({ catalogs }) => {
           <tr>
             <th>Number</th>
             <th>Title</th>
+            <th>Subtitle</th>
+            <th>Source</th>
             <th>Author</th>
             <th>Date</th>
             <th>Comments</th>
@@ -38,6 +40,8 @@ const CatalogTable = ({ catalogs }) => {
               <tr key={catalog._id}>
                 <td>{catalog.entryNumber}</td>
                 <td>{catalog.title}</td>
+                <td>{catalog.subtitle}</td>
+                <td>{catalog.source}</td>
                 <td>{catalog.author}</td>
                 <td>{format(new Date(catalog.date), 'PP')}</td>
                 <td>
@@ -79,7 +83,7 @@ const CatalogTable = ({ catalogs }) => {
             ))
           ) : (
             <tr>
-              <td colSpan="6">No entries yet. Please add some entries.</td>
+              <td colSpan="8">No entries yet. Please add some entries.</td>
             </tr>
           )}
         </tbody>

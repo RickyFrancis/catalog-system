@@ -62,6 +62,8 @@ export const listCatalogs =
     entryNumber = '',
     author = '',
     title = '',
+    subtitle = '',
+    source = '',
     comments = '',
     date = ''
   ) =>
@@ -80,7 +82,7 @@ export const listCatalogs =
       };
 
       const { data } = await axios.get(
-        `/api/entries?pageNumber=${pageNumber}&pageSize=${pageSize}&sortBy=${sortBy}&order=${order}&entryNumber=${entryNumber}&author=${author}&title=${title}&comments=${comments}&date=${date}`,
+        `/api/entries?pageNumber=${pageNumber}&pageSize=${pageSize}&sortBy=${sortBy}&order=${order}&entryNumber=${entryNumber}&author=${author}&title=${title}&subtitle=${subtitle}&source=${source}&comments=${comments}&date=${date}`,
         config
       );
 
@@ -165,7 +167,7 @@ export const deleteCatalog = (id) => async (dispatch, getState) => {
 };
 
 export const createCatalog =
-  (entryNumber, title, author, date, comments) =>
+  (entryNumber, title, subtitle, source, author, date, comments) =>
   async (dispatch, getState) => {
     try {
       dispatch({ type: CATALOG_CREATE_REQUEST });
@@ -189,6 +191,8 @@ export const createCatalog =
         {
           entryNumber,
           title,
+          subtitle,
+          source,
           author,
           date,
           comments,
@@ -212,7 +216,7 @@ export const createCatalog =
   };
 
 export const updateCatalog =
-  (_id, entryNumber, title, author, date, comments) =>
+  (_id, entryNumber, title, subtitle, source, author, date, comments) =>
   async (dispatch, getState) => {
     try {
       dispatch({ type: CATALOG_UPDATE_REQUEST });
@@ -236,6 +240,8 @@ export const updateCatalog =
         {
           entryNumber,
           title,
+          subtitle,
+          source,
           author,
           date,
           comments,

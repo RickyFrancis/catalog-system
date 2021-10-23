@@ -26,6 +26,8 @@ const ViewCatalogScreen = ({ match, history }) => {
 
   const [entryNumber, setEntryNumber] = useState('');
   const [title, setTitle] = useState('');
+  const [subtitle, setSubtitle] = useState('');
+  const [source, setSource] = useState('');
   const [author, setAuthor] = useState('');
   const [date, setDate] = useState('');
   const [comments, setComments] = useState('');
@@ -45,6 +47,8 @@ const ViewCatalogScreen = ({ match, history }) => {
       } else {
         setEntryNumber(catalog.entryNumber);
         setTitle(catalog.title);
+        setSubtitle(catalog.subtitle);
+        setSource(catalog.source);
         setAuthor(catalog.author);
         setDate(new Date());
         setComments(catalog.comments);
@@ -87,6 +91,26 @@ const ViewCatalogScreen = ({ match, history }) => {
             type="text"
             placeholder="Enter title"
             value={title}
+            readOnly
+          ></Form.Control>
+        </Form.Group>
+        <Form.Group controlId="subtitle" className="mb-3">
+          <Form.Label>Subtitle</Form.Label>
+          <Form.Control
+            type="text"
+            placeholder="Enter subtitle"
+            value={subtitle}
+            onChange={(e) => setSubtitle(e.target.value)}
+            readOnly
+          ></Form.Control>
+        </Form.Group>
+        <Form.Group controlId="source" className="mb-3">
+          <Form.Label>Source</Form.Label>
+          <Form.Control
+            type="text"
+            placeholder="Enter source"
+            value={source}
+            onChange={(e) => setSource(e.target.value)}
             readOnly
           ></Form.Control>
         </Form.Group>

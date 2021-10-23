@@ -6,6 +6,8 @@ import Flatpickr from 'react-flatpickr';
 const SearchForm = ({
   entryNumber,
   title,
+  subtitle,
+  source,
   author,
   date,
   comments,
@@ -14,6 +16,8 @@ const SearchForm = ({
   pageSize,
   setEntryNumber,
   setTitle,
+  setSubtitle,
+  setSource,
   setAuthor,
   setDate,
   setComments,
@@ -26,50 +30,76 @@ const SearchForm = ({
   return (
     <Form className="mb-3" onSubmit={submitHandler}>
       <Row className="align-items-center">
-        <Col xs="auto">
-          <Form.Label htmlFor="inlineFormInput" visuallyHidden>
+        <Col xs="12" sm="6" md="3">
+          <Form.Label htmlFor="number" visuallyHidden>
             Number
           </Form.Label>
           <Form.Control
             className="mb-2"
-            id="inlineFormInput"
+            id="number"
             type="number"
             placeholder="Number"
             value={entryNumber}
             onChange={(e) => setEntryNumber(e.target.value)}
           />
         </Col>
-        <Col xs="auto">
-          <Form.Label htmlFor="inlineFormInput" visuallyHidden>
+        <Col xs="12" sm="6" md="3">
+          <Form.Label htmlFor="title" visuallyHidden>
             Title
           </Form.Label>
           <Form.Control
             className="mb-2"
-            id="inlineFormInput"
+            id="title"
             placeholder="Title"
             type="text"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
           />
         </Col>
-        <Col xs="auto">
-          <Form.Label htmlFor="inlineFormInput" visuallyHidden>
-            Author
+        <Col xs="12" sm="6" md="3">
+          <Form.Label htmlFor="subtitle" visuallyHidden>
+            Subtitle
           </Form.Label>
           <Form.Control
             className="mb-2"
-            id="inlineFormInput"
+            id="subtitle"
+            placeholder="Subtitle"
+            type="text"
+            value={subtitle}
+            onChange={(e) => setSubtitle(e.target.value)}
+          />
+        </Col>
+        <Col xs="12" sm="6" md="3">
+          <Form.Label htmlFor="source" visuallyHidden>
+            Source
+          </Form.Label>
+          <Form.Control
+            className="mb-2"
+            id="source"
+            placeholder="Source"
+            type="text"
+            value={source}
+            onChange={(e) => setSource(e.target.value)}
+          />
+        </Col>
+        <Col xs="12" sm="6" md="3">
+          <Form.Label htmlFor="author" visuallyHidden>
+            Author
+          </Form.Label>
+          <Form.Control
+            className="mb-2 inputNegativeMargin1"
+            id="author"
             placeholder="Author"
             type="text"
             value={author}
             onChange={(e) => setAuthor(e.target.value)}
           />
         </Col>
-        <Col xs="auto" className="p-1 mt-2">
-          <Form.Label htmlFor="inlineFormInput" visuallyHidden>
+        <Col xs="12" sm="6" md="3" className="pl-2 pr-2 mt-2">
+          <Form.Label htmlFor="date" visuallyHidden>
             Date
           </Form.Label>
-          <div className="input-group mb-3">
+          <div className="input-group mb-3 inputNegativeMargin2">
             <Flatpickr
               class="form-control"
               style={{ background: '#FFF' }}
@@ -103,30 +133,27 @@ const SearchForm = ({
             </button>
           </div>
         </Col>
-        <Col xs="auto">
-          <Form.Label htmlFor="inlineFormInput" visuallyHidden>
-            Comment
+        <Col xs="12" sm="6" md="3">
+          <Form.Label htmlFor="comments" visuallyHidden>
+            Comments
           </Form.Label>
           <Form.Control
-            className="mb-2"
-            id="inlineFormInput"
-            placeholder="Comment"
+            className="mb-2 inputNegativeMargin2"
+            id="comments"
+            placeholder="Comments"
             type="text"
             value={comments}
             onChange={(e) => setComments(e.target.value)}
           />
         </Col>
-
-        <Col xs="auto">
-          <Button type="submit" className="mb-2">
-            <i className="fas fa-search"></i>
-          </Button>
-        </Col>
-        <Col xs="auto">
-          <Form.Label htmlFor="inlineFormInput" visuallyHidden>
+      </Row>
+      <Row className="align-items-center">
+        <Col xs="auto" sm="6" md="auto">
+          <Form.Label htmlFor="sort by" visuallyHidden>
             Sort by
           </Form.Label>
           <Form.Select
+            size="sm"
             aria-label="Sort by"
             className="mb-2"
             onChange={(e) => setSortBy(e.target.value)}
@@ -139,9 +166,9 @@ const SearchForm = ({
             <option value="comment">Comment</option>
           </Form.Select>
         </Col>
-
-        <Col xs="auto">
+        <Col xs="auto" sm="6" md="auto">
           <Form.Select
+            size="sm"
             aria-label="Sort by"
             className="mb-2"
             onChange={(e) => setOrder(e.target.value)}
@@ -151,11 +178,12 @@ const SearchForm = ({
             <option value="desc">Descending</option>
           </Form.Select>
         </Col>
-        <Col xs="auto">
-          <Form.Label htmlFor="inlineFormInput" visuallyHidden>
+        <Col xs="auto" sm="6" md="1">
+          <Form.Label htmlFor="page size" visuallyHidden>
             Show:
           </Form.Label>
           <Form.Select
+            size="sm"
             aria-label="Sort by"
             className="mb-2"
             onChange={(e) => setPageSize(e.target.value)}
@@ -165,6 +193,11 @@ const SearchForm = ({
             <option value="50">50</option>
             <option value="100">100</option>
           </Form.Select>
+        </Col>
+        <Col xs="auto" sm="6" md="1">
+          <Button type="submit" className="mb-2" size="sm">
+            <i className="fas fa-search"></i>
+          </Button>
         </Col>
       </Row>
     </Form>

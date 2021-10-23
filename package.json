@@ -1,14 +1,17 @@
 {
   "name": "node-js-sample",
   "version": "0.2.0",
-  "description": "A sample Node.js app using Express 4",
-  "main": "index.js",
+  "description": "Catalog System App for NDUB Vice Chancellor",
+  "main": "server.js",
   "scripts": {
-    "start": "node index.js",
-    "server": "node server.js"
+    "start": "node server.js",
+    "server": "nodemon server.js",
+    "client": "npm start --prefix client",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "concurrently": "^6.3.0",
     "config": "^3.3.6",
     "cors": "^2.8.5",
     "dotenv": "^10.0.0",

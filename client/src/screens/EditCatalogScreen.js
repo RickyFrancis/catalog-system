@@ -37,6 +37,8 @@ const EditCatalogScreen = ({ match, history }) => {
 
   const [entryNumber, setEntryNumber] = useState('');
   const [title, setTitle] = useState('');
+  const [subtitle, setSubtitle] = useState('');
+  const [source, setSource] = useState('');
   const [author, setAuthor] = useState('');
   const [date, setDate] = useState('');
   const [comments, setComments] = useState('');
@@ -52,6 +54,8 @@ const EditCatalogScreen = ({ match, history }) => {
       } else {
         setEntryNumber(catalog.entryNumber);
         setTitle(catalog.title);
+        setSubtitle(catalog.subtitle);
+        setSource(catalog.source);
         setAuthor(catalog.author);
         setDate(catalog.date);
         setComments(catalog.comments);
@@ -62,7 +66,16 @@ const EditCatalogScreen = ({ match, history }) => {
   const submitHandler = (e) => {
     e.preventDefault();
     dispatch(
-      updateCatalog(catalog._id, entryNumber, title, author, date, comments)
+      updateCatalog(
+        catalog._id,
+        entryNumber,
+        title,
+        subtitle,
+        source,
+        author,
+        date,
+        comments
+      )
     );
   };
 
@@ -110,6 +123,24 @@ const EditCatalogScreen = ({ match, history }) => {
             placeholder="Enter title"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
+          ></Form.Control>
+        </Form.Group>
+        <Form.Group controlId="subtitle" className="mb-3">
+          <Form.Label>Subtitle</Form.Label>
+          <Form.Control
+            type="text"
+            placeholder="Enter subtitle"
+            value={subtitle}
+            onChange={(e) => setSubtitle(e.target.value)}
+          ></Form.Control>
+        </Form.Group>
+        <Form.Group controlId="source" className="mb-3">
+          <Form.Label>Source</Form.Label>
+          <Form.Control
+            type="text"
+            placeholder="Enter source"
+            value={source}
+            onChange={(e) => setSource(e.target.value)}
           ></Form.Control>
         </Form.Group>
         <Form.Group controlId="author" className="mb-3">
