@@ -10,12 +10,12 @@ router.get('/', auth, async (req, res) => {
   let pageNumber = Number(req.query.pageNumber) || 1;
   let searchParameter = {};
   let sortParams = {};
-  req.query.order === 'asc'
-    ? (sortParams.order = 1)
-    : (sortParams.order = -1);
+  req.query.order === 'desc'
+    ? (sortParams.order = -1)
+    : (sortParams.order = 1);
   req.query.sortBy
     ? (sortParams.sortBy = req.query.sortBy)
-    : (sortParams.sortBy = 'updateTime');
+    : (sortParams.sortBy = 'entryNumber');
 
   const sortObject = [sortParams.sortBy.toString(), sortParams.order];
 
@@ -66,7 +66,8 @@ router.get('/', auth, async (req, res) => {
     const entries = await Entry.find({ ...searchParameter })
       .sort([sortObject])
       .limit(pageSize)
-      .skip((pageNumber - 1) * pageSize);
+      .skip((pageNumber - 1) * pageSize)
+      .collation({ locale: 'en_US', numericOrdering: true });
     if (count < 1) {
       return res.status(404).send('No entires found');
     }
